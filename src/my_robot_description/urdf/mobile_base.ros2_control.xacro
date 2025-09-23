@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+<!-- ===================================================== -->
+<!-- PASTE THE NEW XML TAGS FOR ROS2_CONTROL RIGHT HERE    -->
+<!-- ===================================================== -->
+
+    <!-- The block builds the communication bridge between the software controllers 
+    (joint_trajectory_controller/controller_manager) and the simulated robot. -->
+
+    <!-- <ros2_control </ros2_control> is a  hardware's "spec sheet." 
+    The Controller Manager reads that spec sheet to see what "ports" or "slots" the robot has available. 
+    It's the official inventory list that answers the controller_manager's questions
+   
+    "Can this joint be commanded by position?" -> (Looks at <command_interface>) -> "Yes."
+    "Can I read the velocity from this joint?" -> (Looks at <state_interface>) -> "Yes."
+    "Can this joint be commanded by velocity?" -> (Looks at <command_interface>) -> "No, that's not listed."-->
+  <ros2_control name="MobileBase" type="system">
+    <!-- name="MyRobotSystem" unique name system uses to refer to it -->
+    <!-- type="system" - Type of Blueprint -->
+    <!-- type="actuator" gripper attached to the end, "This is a simple, single-purpose component that performs an action." -->
+    <!-- <type="sensor" force-torque sensor in the wrist, "This is a read-only component that provides data." -->
+    <!-- type="system" main 6-joint arm, "This is a complex, multi-joint component that is the core of the robot." --> 
+    
+    <hardware>
+      <!-- <plugin>gazebo_ros2_control/GazeboSystem</plugin> -->
+
+      <!-- <plugin>mock_components/GenericSystem</plugin>
+      <param name="calculate_dynamics">true</param> -->
+
+      <plugin>my_robot_hardware/PCA9685BTS7960</plugin>
+
+      <!-- I2C + PWM -->
+      <param name="i2c_bus">1</param>
+      <param name="i2c_addr">0x40</param>
+      <param name="pwm_hz">1000</param>
+
+      <!-- PCA9685 channel map -->
+      <param name="left_lpw">0</param>
+      <param name="left_rpw">1</param>
+      <param name="right_lpw">2</param>
+      <param name="right_rpw">3</param>
+
+      <!-- control mapping -->
+      <param name="max_speed_rad_s">12.0</param>
+      <param name="deadband">0.04</param>
+      <param name="invert_left">false</param>
+      <param name="invert_right">true</param>
+
+      <param name="dry_run">false</param>
+
+
+      <!-- <plugin>mobile_base_hardware/MobileBaseHardwareInterface</plugin> -->
+      <!-- <library path="my_robot_hardware">
+        <class name="mobile_base_hardware/MobileBaseHardwareInterface"
+              type="mobile_base_hardware::MobileBaseHardwareInterface"
+              base_class_type="hardware_interface::SystemInterface">
+            <description>
+                Hardware interface for a mobile base with 2 Dynamixel motors
+            </description>
+        </class>
+      </library> -->
+      <!-- <param name="left_motor_id">10</param>
+      <param name="right_motor_id">20</param>
+      <param name="dynamixel_port">/dev/ttyACM0</param> -->
+
+      <!-- info_ = info;
+      left_motor_id_ = std::stoi(info_.hardware_parameters["left_motor_id"]);
+      right_motor_id_ = std::stoi(info_.hardware_parameters["right_motor_id"]);
+      port_ = info_.hardware_parameters["dynamixel_port"]; -->
+
+    </hardware>
+    <!-- Provide the name of the Hardware Interface here!!! -->
+    <!-- This block defines the connection to the robot, like plugging in a USB port. -->
+    <!-- The <plugin> tag is the specific software "driver" that makes the connection work. -->
+    <!-- the name of driver - gazebo_ros2_control/GazeboSystem sends physics commands (a different kind of "signal") to the Gazebo engine. 
+     For a real robot, the driver sends electrical signals-->
+    
+    <!-- controller_manager checking YAML and URDF/XACRO files  to make sure they are compatible -->
+    <!-- The URDF/XACRO file is an "INVENTORY LIST". -->
+    <!-- The Controller YAML file is a "SHOPPING LIST" -->
+    <!-- When you launch the robot, the controller_manager (the active program) takes both lists and compares them. 
+    If every item on the "Shopping List" is available on the "Inventory List," then everything works. 
+    The reason for this strict "lock and key" matching is all about Safety, Predictability, and Preventing Errors.
+    It stops you from sending commands the hardware doesn't understand-->
+    <joint name="base_right_wheel_joint">
+      <!-- The "tools" this controller can USE to send commands. -->
+      <command_interface name="velocity" /> 
+      <!-- tells the controller where to go to read the live data. -->
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <!-- <state_interface name="effort"/> -->
+    </joint>
+
+    <joint name="base_left_wheel_joint">
+      <!-- The "tools" this controller can USE to send commands. -->
+      <command_interface name="velocity" /> 
+      <!-- tells the controller where to go to read the live data. -->
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <!-- <state_interface name="effort"/> -->
+    </joint>
+
+  </ros2_control>
+
+</robot>

@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<launch>
+
+    <let name="urdf_path" 
+         value="$(find-pkg-share my_robot_description)/urdf/my_robot.urdf.xacro" />
+         
+    <let name="rviz_config_path"
+         value="$(find-pkg-share my_robot_description)/rviz/urdf_config.rviz" />
+
+    <!-- .................................................................................... -->
+
+    <!-- 1. DID NOT WORK: -->
+    <!-- ros2 run robot_state_publisher robot_state_publisher  -->
+    <!-- ros-args -p robot_description:="$(xacro /home/ros2/ros_ws/src/my_robot_description/urdf/my_robot.urdf.xacro)" -->
+    <node pkg="robot_state_publisher" exec="robot_state_publisher">
+        <param name="robot_description"
+               value="$(command 'xacro $(var urdf_path)')" />
+    </node>
+    <!-- calculates the exact 3D position and orientation of every single part of the puppet. 
+     It then publishes these positions as /tf messages.-->
+
+    <node pkg="joint_state_publisher" exec="joint_state_publisher" />
+
+    <!-- .................................................................................... -->
+
+    <!--  sliders for you to set the joint angles. -->
+    <!-- <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" /> -->
+    <!-- We're going to use the joint state publisher from the Ros2 control
+    controllers. -->
+
+    <!-- 2. THIS WORKED: -->
+    <!-- ros2 run controller_manager ros2_control_node ros-args 
+    <- params-file /home/ros2/ros2_ws/src/my_robot_bringup/config/my_robot_controller.yaml -->
+    
+    <!-- FIXED SYNTAX: Use the <param from=.../> tag to load a YAML file for a node. -->
+    <!-- <node pkg="controller_manager" exec="ros2_control_node">
+        <param from="$(find-pkg-share my_robot_bringup)/config/my_robot_controller.yaml" />
+    </node> -->
+    <node pkg="controller_manager" exec="ros2_control_node" output="screen">
+        <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
+        <param from="$(find-pkg-share my_robot_bringup)/config/my_robot_controller.yaml" />
+    </node>
+
+    
+    <!-- .................................................................................... -->
+
+    <!-- 3. THIS WORKED: -->
+    <!-- ros2 run controller_manager spawner joint_state_broadcaster -->
+    <!-- ros2 run controller_manager spawner diff_drive_controller -->
+    <node pkg="controller_manager" exec="spawner" args="joint_state_broadcaster" />
+    <node pkg="controller_manager" exec="spawner" args="diff_drive_controller" />
+    <!-- <node pkg="controller_manager" exec="spawner" args="arm_joints_controller" /> -->
+
+    <!-- .................................................................................... -->
+
+    <!-- 4. THIS WORKED: -->
+    <!-- ros2 run rviz2 rviz2 -d /home/ros2/ros2_ws/src/my_robot_description/rviz/urdf_config.rviz -->
+    <!--  listens to the /tf messages and displays the final robot to screen -->
+    <node pkg="rviz2" exec="rviz2" output="screen" 
+          args="-d $(var rviz_config_path)" />
+
+    <!-- RPLIDAR -->
+    <node pkg="rplidar_ros" exec="rplidar_composition" name="rplidar_node" output="screen" respawn="true">
+        <param name="serial_port" value="/dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_0c827ccfcf73ef118090d18c8fcc3fa0-if00-port0"/>
+        <param name="serial_baudrate" value="460800"/>
+        <param name="frame_id" value="laser_link"/>
+        <param name="angle_compensate" value="true"/>
+        <!-- <param name="scan_mode" value="Standard"/> -->
+    </node>
+
+    <node pkg="v4l2_camera" exec="v4l2_camera_node" name="cam">
+        <param name="video_device" value="/dev/video0"/>
+        <param name="image_size" value="[160,90]"/>          <!-- 16:9, small -->
+        <param name="frame_rate" value="15"/>
+        <param name="pixel_format" value="GREY"/>             <!-- camera outputs 8-bit greyscale -->
+        <param name="output_encoding" value="mono8"/>         <!-- ROS image is mono8 -->
+        <!-- QoS: drop frames instead of queuing -->
+        <param name="qos_overrides./image_raw.publisher.reliability" value="best_effort"/>
+        <param name="qos_overrides./image_raw.publisher.history" value="keep_last"/>
+        <param name="qos_overrides./image_raw.publisher.depth" value="1"/>
+   
+        <!-- QoS overrides for minimal latency -->
+        <param name="qos_overrides./image_raw.publisher.reliability" value="best_effort"/>
+        <param name="qos_overrides./image_raw.publisher.durability" value="volatile"/>
+        <param name="qos_overrides./image_raw.publisher.history" value="keep_last"/>
+        <param name="qos_overrides./image_raw.publisher.depth" value="1"/>
+    </node>
+
+    <!-- Image Transport Republish -->
+    <node pkg="image_transport" exec="republish" name="to_foxglove"
+        args="raw in:=/image_raw foxglove out:=/image_raw/fg_h264">
+        <!-- Critical low-latency knobs for the foxglove transport -->
+        <param name="image_raw.foxglove.gop_size" value="1"/>               <!-- I-frame every frame: lowest latency -->
+        <param name="image_raw.foxglove.bit_rate" value="800000"/>          <!-- ~0.8 Mbps; tune up/down -->
+        <!-- Try a hardware encoder if available; otherwise libx264 is fine -->
+        <param name="image_raw.foxglove.encoder" value="h264_v4l2m2m"/>     <!-- or libx264 / h264_vaapi / h264_nvenc -->
+        <param name="image_raw.foxglove.encoder_av_options" value="tune:zerolatency,delay:0"/>
+    </node>
+
+    <!-- Joy Node -->
+    <node pkg="joy" exec="joy_node" name="joy_node" output="screen" respawn="true">
+        <param name="device_id" value="0"/>
+        <param name="deadzone" value="0.05"/>
+        <param name="autorepeat_rate" value="20.0"/>
+        <param name="frame_id" value="joy"/>
+    </node>
+
+    <!-- Teleop Node - publishes to intermediate topic as Twist -->
+    <node pkg="teleop_twist_joy" exec="teleop_node" name="teleop_node" output="screen" respawn="true">
+        <param from="$(find-pkg-share my_robot_bringup)/config/joystick.yaml" />
+        <remap from="/cmd_vel" to="/cmd_vel_unstamped"/>
+    </node>
+
+    <!-- Twist Stamper - converts Twist to TwistStamped -->
+    <node pkg="twist_stamper" exec="twist_stamper" name="twist_stamper" output="screen">
+        <remap from="cmd_vel_in" to="/cmd_vel_unstamped"/>
+        <remap from="cmd_vel_out" to="/diff_drive_controller/cmd_vel"/>
+        <param name="frame_id" value="base_footprint"/>
+    </node>
+
+    <!-- Foxglove bridge: bigger buffer + ws compression -->
+    <node pkg="foxglove_bridge" exec="foxglove_bridge" name="foxglove_bridge">
+        <param name="port" value="8765"/>
+        <param name="send_buffer_limit" value="8000000"/>   <!-- 8 MB: drop early, avoid latency -->
+        <param name="use_compression" value="true"/>        <!-- permessage-deflate; helps on Wi-Fi -->
+        <param name="num_threads" value="2"/>
+        <param name="min_qos_depth" value="1"/>
+        <param name="max_qos_depth" value="1"/>
+    </node>
+
+    <!-- Toggle sim time from the command line -->
+    <arg name="use_sim_time" default="false"/>
+
+    <!-- Your slam_toolbox params -->
+    <arg name="slam_params_file"
+        default="$(find-pkg-share my_robot_bringup)/config/slam_toolbox_params.yaml"/>
+
+    <!-- Include slam_toolbox async mapper -->
+    <include file="$(find-pkg-share slam_toolbox)/launch/online_async_launch.py">
+        <arg name="use_sim_time" value="$(var use_sim_time)"/>
+        <arg name="slam_params_file" value="$(var slam_params_file)"/>
+    </include>
+
+</launch>

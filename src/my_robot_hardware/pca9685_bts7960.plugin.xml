@@ -1,0 +1,8 @@
+<library path="pca9685_bts7960">
+  <class
+    name="my_robot_hardware/PCA9685BTS7960"
+    type="my_robot_hardware::PCA9685BTS7960"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>PCA9685→BTS7960 open-loop wheel driver</description>
+  </class>
+</library>

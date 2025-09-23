@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+
+  <ros2_control name="Arm" type="system">
+    <!-- name="MyRobotSystem" unique name system uses to refer to it -->
+    <!-- type="system" - Type of Blueprint -->
+    <!-- type="actuator" gripper attached to the end, "This is a simple, single-purpose component that performs an action." -->
+    <!-- <type="sensor" force-torque sensor in the wrist, "This is a read-only component that provides data." -->
+    <!-- type="system" main 6-joint arm, "This is a complex, multi-joint component that is the core of the robot." --> 
+    
+    <hardware>
+      <plugin>mock_components/GenericSystem</plugin>
+      <param name="calculate_dynamics">true</param>
+      <!-- <plugin>arm_hardware/ArmHardwareInterface</plugin>
+      <param name="joint1_motor_id">10</param>
+      <param name="joint2_motor_id">20</param>
+      <param name="dynamixel_port">/dev/ttyACM0</param> -->
+
+    </hardware>
+    <!-- Provide the name of the Hardware Interface here!!! -->
+    <!-- This block defines the connection to the robot, like plugging in a USB port. -->
+    
+    <!-- controller_manager checking YAML and URDF/XACRO files  to make sure they are compatible -->
+    <!-- The URDF/XACRO file is an "INVENTORY LIST". -->
+    <!-- The Controller YAML file is a "SHOPPING LIST" -->
+    <!-- When you launch the robot, the controller_manager (the active program) takes both lists and compares them. 
+    If every item on the "Shopping List" is available on the "Inventory List," then everything works. 
+    The reason for this strict "lock and key" matching is all about Safety, Predictability, and Preventing Errors.
+    It stops you from sending commands the hardware doesn't understand-->
+    <joint name="arm_joint1">
+      <!-- The "tools" this controller can USE to send commands. -->
+      <command_interface name="position" /> 
+      <!-- tells the controller where to go to read the live data. -->
+      <state_interface name="position"/>
+    </joint>
+
+    <joint name="arm_joint2">
+      <command_interface name="position" /> 
+      <state_interface name="position"/>
+    </joint>
+  </ros2_control>
+
+</robot>

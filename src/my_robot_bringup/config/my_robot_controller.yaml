@@ -1,0 +1,137 @@
+# Controller manager configuration
+# the intended settings that follow belong to controller_manager/
+# writing a character name before their lines of dialogue
+controller_manager: 
+  ros__parameters:
+      
+    update_rate: 50  # Hz - check on motors/servos 10 times/sec
+
+    ### Controllers available
+    # https://github.com/ros-controls/ros2_controllers/blob/master/joint_trajectory_controller/src/joint_trajectory_controller_parameters.yaml
+    # Here is the list of expert cooks
+    # For each specialist you add to the catalog provide two things:
+    joint_state_broadcaster: # A Unique Name - it could be abc, xyz, bla bla bla
+      # The type refers to the ROS2_control plugin that will be used.
+      type: joint_state_broadcaster/JointStateBroadcaster # its specific, official role
+      # report the current status of all your robot's joints to the rest of the ROS 2 system
+  
+    diff_drive_controller: # A Unique Name - it could be abc, xyz, bla bla bla
+      # The type refers to the ROS2_control plugin that will be used.
+      type: diff_drive_controller/DiffDriveController # its specific, official role
+      # report the current status of all your robot's joints to the rest of the ROS 2 system
+
+    # arm_joints_controller:
+    #   type: forward_command_controller/ForwardCommandController # its specific, official role
+    
+### Properties of the controllers that we will use and definition of joints to use ###
+diff_drive_controller: # A Unique Name - it could be abc, xyz, bla bla bla
+  ros__parameters:
+    left_wheel_names: ["base_left_wheel_joint"] # providing parameter
+    right_wheel_names: ["base_right_wheel_joint"]
+
+    wheel_separation: 0.08  # 80mm
+    wheel_radius: 0.036     # 36mm radius
+
+    odom_frame_id: "odom" # providing default parameter
+    # Odometry: estimating its position by keeping track of its own movements, 
+    # like how far its wheels have turned.
+    base_frame_id: "base_footprint"
+
+    # odom_frame_id: {
+    #   type: string,
+    #   default_value: "odom",
+    #   description:  "Name of the frame for odometry. This frame is parent of ``base_frame_id`` when controller publishes odometry.",
+    # }
+    # base_frame_id: {
+    #   type: string,
+    #   default_value: "base_link",
+    #   description: "Name of the robot's base frame that is child of the odometry frame.",
+    # }
+
+    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+
+    # pose_covariance_diagonal: {
+    #   type: double_array,
+    #   default_value: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    #   description: "Odometry covariance for the encoder output of the robot for the pose. 
+    #   These values should be tuned to your robot's sample odometry data, 
+    #   but these values are a good place to start: ``[0.001, 0.001, 0.001, 0.001, 0.001, 0.01]``.",
+    # }
+    # twist_covariance_diagonal: {
+    #   type: double_array,
+    #   default_value: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+    #   description: "Odometry covariance for the encoder output of the robot for the speed. 
+    #   These values should be tuned to your robot's sample odometry data, 
+    #   but these values are a good place to start: ``[0.001, 0.001, 0.001, 0.001, 0.001, 0.01]``.",
+    # }
+
+    enable_odom_tf: true
+
+    # enable_odom_tf: {
+    #   type: bool,
+    #   default_value: true,
+    #   description: "Publish transformation between ``odom_frame_id`` and ``base_frame_id``.",
+    # }
+
+    publish_rate: 50.0
+
+    # publish_rate: {
+    #   type: double,
+    #   default_value: 50.0, # Hz
+    #   description: "Publishing rate (Hz) of the odometry and TF messages.",
+    # }
+
+    linear.x.max_velocity: 1.0
+    linear.x.min_velocity: -1.0
+
+    # linear:
+    #   x:
+    #     has_velocity_limits: true
+    #     max_velocity: 1.0
+    #     min_velocity: -1.0
+    # angular:
+    #   z:
+    #     has_velocity_limits: true
+    #     max_velocity: 1.0
+    #     min_velocity: -1.0
+
+    # linear:
+    #   x:
+    #     max_velocity: {
+    #       type: double,
+    #       default_value: .NAN,
+    #       validation: {
+    #         "control_filters::gt_eq_or_nan<>": [0.0]
+    #       }
+    #     }
+    #     min_velocity: { . . . . . . . . . . . . . . . . . . 
+
+    angular.z.max_velocity: 10.0
+    angular.z.min_velocity: -10.0
+    # angular:
+    #   z:
+    #     max_velocity: {
+    #       type: double,
+    #       default_value: .NAN,
+    #       validation: {
+    #         "control_filters::gt_eq_or_nan<>": [0.0]
+    #       }
+    #     }
+    #     min_velocity: { . . . . . . . . . . . . . . . . . . 
+
+#
+
+# forward_command_controller:
+  # joints: {
+    # type: string_array,
+    # default_value: [],
+    # description: "Name of the joints to control",
+  # }
+  # interface_name: {
+    # type: string,
+    # default_value: "",
+    # description: "Name of the interface to command",
+  # }
+
+

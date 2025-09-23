@@ -1,0 +1,29 @@
+teleop_node:
+  ros__parameters:
+    # Remove stamped: true and frame_id from here
+    # Let twist_stamper handle the stamping
+    
+    # LINEAR MOVEMENT CONFIGURATION
+    axis_linear:
+      x: 7  # # D-pad vertical axis
+    
+    scale_linear:
+      x: 0.15  # Normal linear velocity scaling factor (m/s) - reduces sensitivity for precise control
+    
+    scale_linear_turbo:
+      x: 0.2  # Turbo mode linear velocity scaling factor (m/s) - full speed when turbo is enabled
+    
+    # ANGULAR MOVEMENT CONFIGURATION  
+    axis_angular:
+      yaw: 6  # Joystick axis number for left/right rotation (typically left stick horizontal)
+    
+    scale_angular:
+      yaw: 4.0  # Normal angular velocity scaling factor (rad/s) - reduces turning sensitivity
+    
+    scale_angular_turbo:
+      yaw: 5.0  # Turbo mode angular velocity scaling factor (rad/s) - full turning speed with turbo
+    
+    # SAFETY AND CONTROL BUTTONS (Xbox Controller Mapping)
+    require_enable_button: false  # Requires holding an enable button to move (deadman switch for safety)
+    enable_button: 4            # Left Bumper (LB) - must be held to enable movement (safer than back button)
+    enable_turbo_button: 5      # Right Bumper (RB) - press to activate turbo mode

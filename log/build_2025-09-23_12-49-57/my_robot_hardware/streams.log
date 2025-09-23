@@ -1,0 +1,83 @@
+[0.012s] Invoking command in '/home/pi/ros2_ws/build/my_robot_hardware': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/pi/ros2_ws/src/my_robot_hardware -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/pi/ros2_ws/install/my_robot_hardware
+[0.332s] -- The C compiler identification is GNU 13.3.0
+[0.708s] -- The CXX compiler identification is GNU 13.3.0
+[0.737s] -- Detecting C compiler ABI info
+[0.908s] -- Detecting C compiler ABI info - done
+[0.919s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.920s] -- Detecting C compile features
+[0.921s] -- Detecting C compile features - done
+[0.935s] -- Detecting CXX compiler ABI info
+[1.109s] -- Detecting CXX compiler ABI info - done
+[1.121s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.121s] -- Detecting CXX compile features
+[1.122s] -- Detecting CXX compile features - done
+[1.130s] -- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[1.360s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[1.493s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[1.550s] -- Found rclcpp: 28.1.12 (/opt/ros/jazzy/share/rclcpp/cmake)
+[1.623s] -- Found rosidl_generator_c: 4.6.6 (/opt/ros/jazzy/share/rosidl_generator_c/cmake)
+[1.647s] -- Found rosidl_generator_cpp: 4.6.6 (/opt/ros/jazzy/share/rosidl_generator_cpp/cmake)
+[1.681s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.718s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.846s] -- Found rmw_implementation_cmake: 7.3.2 (/opt/ros/jazzy/share/rmw_implementation_cmake/cmake)
+[1.852s] -- Found rmw_fastrtps_cpp: 8.4.3 (/opt/ros/jazzy/share/rmw_fastrtps_cpp/cmake)
+[1.996s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.13")  
+[2.024s] -- Found FastRTPS: /opt/ros/jazzy/include (Required is at least version "2.13") 
+[2.058s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[2.190s] -- Found rclcpp_lifecycle: 28.1.12 (/opt/ros/jazzy/share/rclcpp_lifecycle/cmake)
+[2.253s] -- Found hardware_interface: 4.37.0 (/opt/ros/jazzy/share/hardware_interface/cmake)
+[3.030s] -- Configuring done (3.0s)
+[3.072s] -- Generating done (0.0s)
+[3.081s] -- Build files have been written to: /home/pi/ros2_ws/build/my_robot_hardware
+[3.109s] Invoked command in '/home/pi/ros2_ws/build/my_robot_hardware' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/pi/ros2_ws/src/my_robot_hardware -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/pi/ros2_ws/install/my_robot_hardware
+[3.111s] Invoking command in '/home/pi/ros2_ws/build/my_robot_hardware': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/pi/ros2_ws/build/my_robot_hardware -- -j4 -l4
+[3.199s] [ 50%] [32mBuilding CXX object CMakeFiles/pca9685_bts7960.dir/src/pca9685_bts7960.cpp.o[0m
+[7.095s] [01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn my_robot_hardware::PCA9685BTS7960::[01;32m[Kon_init[m[K(const hardware_interface::HardwareInfo&)[m[K’:
+[7.095s] [01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:54:31:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvirtual rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn hardware_interface::HardwareComponentInterface::[01;32m[Kon_init[m[K(const hardware_interface::HardwareInfo&)[m[K’ is deprecated: Use on_init(const HardwareComponentInterfaceParams & params) instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[7.095s]    54 |   if ([01;35m[KSystemInterface::on_init(info)[m[K != CallbackReturn::SUCCESS) return CallbackReturn::ERROR;
+[7.095s]       |       [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+[7.095s] In file included from [01m[K/opt/ros/jazzy/include/hardware_interface/hardware_interface/system_interface.hpp:18[m[K,
+[7.095s]                  from [01m[K/home/pi/ros2_ws/src/my_robot_hardware/include/my_robot_hardware/pca9685_bts7960.hpp:7[m[K,
+[7.096s]                  from [01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:1[m[K:
+[7.096s] [01m[K/opt/ros/jazzy/include/hardware_interface/hardware_interface/hardware_component_interface.hpp:209:26:[m[K [01;36m[Knote: [m[Kdeclared here
+[7.096s]   209 |   virtual CallbackReturn [01;36m[Kon_init[m[K(const HardwareInfo & hardware_info)
+[7.096s]       |                          [01;36m[K^~~~~~~[m[K
+[7.110s] [01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:[m[K In member function ‘[01m[Kvoid my_robot_hardware::PCA9685BTS7960::[01;32m[Kpca_set_pwm[m[K(int, uint16_t, uint16_t)[m[K’:
+[7.111s] [01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:228:61:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kon[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[7.111s]   228 | 60::pca_set_pwm(int ch, [01;35m[Kstd::uint16_t on[m[K, std::uint16_t off) noexcept
+[7.111s]       |                         [01;35m[K~~~~~~~~~~~~~~^~[m[K
+[7.111s] 
+[10.432s] [100%] [32m[1mLinking CXX shared library libpca9685_bts7960.so[0m
+[11.012s] [100%] Built target pca9685_bts7960
+[11.029s] Invoked command in '/home/pi/ros2_ws/build/my_robot_hardware' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/pi/ros2_ws/build/my_robot_hardware -- -j4 -l4
+[11.031s] Invoking command in '/home/pi/ros2_ws/build/my_robot_hardware': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/pi/ros2_ws/build/my_robot_hardware
+[11.042s] -- Install configuration: ""
+[11.043s] -- Execute custom install script
+[11.043s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware//pca9685_bts7960.plugin.xml
+[11.058s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/include/my_robot_hardware/pca9685_bts7960.hpp
+[11.072s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/pca9685_bts7960.plugin.xml
+[11.072s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/library_path.sh
+[11.086s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/library_path.dsv
+[11.100s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/package_run_dependencies/my_robot_hardware
+[11.114s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/parent_prefix_path/my_robot_hardware
+[11.128s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/ament_prefix_path.sh
+[11.142s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/ament_prefix_path.dsv
+[11.161s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/path.sh
+[11.175s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/path.dsv
+[11.189s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.bash
+[11.203s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.sh
+[11.217s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.zsh
+[11.231s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.dsv
+[11.244s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/package.dsv
+[11.259s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/packages/my_robot_hardware
+[11.273s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/hardware_interface__pluginlib__plugin/my_robot_hardware
+[11.287s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/ament_cmake_export_targets-extras.cmake
+[11.301s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/ament_cmake_export_dependencies-extras.cmake
+[11.315s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/my_robot_hardwareConfig.cmake
+[11.329s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/my_robot_hardwareConfig-version.cmake
+[11.343s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/package.xml
+[11.357s] -- Installing: /home/pi/ros2_ws/install/my_robot_hardware/lib/libpca9685_bts7960.so
+[11.359s] -- Set non-toolchain portion of runtime path of "/home/pi/ros2_ws/install/my_robot_hardware/lib/libpca9685_bts7960.so" to ""
+[11.359s] -- Installing: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/export_my_robot_hardwareExport.cmake
+[11.359s] -- Installing: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/export_my_robot_hardwareExport-noconfig.cmake
+[11.363s] Invoked command in '/home/pi/ros2_ws/build/my_robot_hardware' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/pi/ros2_ws/build/my_robot_hardware
