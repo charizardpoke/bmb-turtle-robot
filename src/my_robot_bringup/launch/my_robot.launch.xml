@@ -128,17 +128,24 @@
         <param name="max_qos_depth" value="1"/>
     </node>
 
-    <!-- Toggle sim time from the command line -->
-    <arg name="use_sim_time" default="false"/>
+    <!-- Cartographer main node (unchanged) -->
+    <node pkg="cartographer_ros" exec="cartographer_node" name="cartographer_node" output="screen">
+        <param name="use_sim_time" value="false"/> <!-- or true if sim -->
+        <param name="configuration_directory" value="$(find-pkg-share my_robot_bringup)/config"/>
+        <param name="configuration_basename" value="my_cartographer.lua"/>
+        <!-- Remaps as needed -->
+        <remap from="scan" to="/scan"/>
+        <remap from="odom" to="/diff_drive_controller/odom"/>
+    </node>
 
-    <!-- Your slam_toolbox params -->
-    <arg name="slam_params_file"
-        default="$(find-pkg-share my_robot_bringup)/config/slam_toolbox_params.yaml"/>
+    <!-- ✅ Correct executable name -->
+    <node pkg="cartographer_ros"
+        exec="cartographer_occupancy_grid_node"
+        name="occupancy_grid_node"
+        output="screen"
+        args="-resolution 0.05 -publish_period_sec 1.0">
+    <param name="use_sim_time" value="false"/> <!-- or true if sim -->
+    </node>
 
-    <!-- Include slam_toolbox async mapper -->
-    <include file="$(find-pkg-share slam_toolbox)/launch/online_async_launch.py">
-        <arg name="use_sim_time" value="$(var use_sim_time)"/>
-        <arg name="slam_params_file" value="$(var slam_params_file)"/>
-    </include>
 
 </launch>
