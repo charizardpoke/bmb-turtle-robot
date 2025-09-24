@@ -19,7 +19,7 @@
     <!-- calculates the exact 3D position and orientation of every single part of the puppet. 
      It then publishes these positions as /tf messages.-->
 
-    <node pkg="joint_state_publisher" exec="joint_state_publisher" />
+    <!-- <node pkg="joint_state_publisher" exec="joint_state_publisher" /> -->
 
     <!-- .................................................................................... -->
 
@@ -30,7 +30,7 @@
 
     <!-- 2. THIS WORKED: -->
     <!-- ros2 run controller_manager ros2_control_node ros-args 
-    <- params-file /home/ros2/ros2_ws/src/my_robot_bringup/config/my_robot_controller.yaml -->
+    params-file /home/ros2/ros2_ws/src/my_robot_bringup/config/my_robot_controller.yaml -->
     
     <!-- FIXED SYNTAX: Use the <param from=.../> tag to load a YAML file for a node. -->
     <!-- <node pkg="controller_manager" exec="ros2_control_node">
@@ -128,24 +128,17 @@
         <param name="max_qos_depth" value="1"/>
     </node>
 
-    <!-- Cartographer main node (unchanged) -->
-    <node pkg="cartographer_ros" exec="cartographer_node" name="cartographer_node" output="screen">
-        <param name="use_sim_time" value="false"/> <!-- or true if sim -->
-        <param name="configuration_directory" value="$(find-pkg-share my_robot_bringup)/config"/>
-        <param name="configuration_basename" value="my_cartographer.lua"/>
-        <!-- Remaps as needed -->
-        <remap from="scan" to="/scan"/>
-        <remap from="odom" to="/diff_drive_controller/odom"/>
-    </node>
+    <!-- Launch SLAM Toolbox first (asynchronous SLAM for online mapping) -->
+    <include file="$(find-pkg-share slam_toolbox)/launch/online_async_launch.py">
+        <arg name="params_file" value="$(find-pkg-share my_robot_bringup)/config/nav2_params.yaml"/>
+        <arg name="use_sim_time" value="false"/>
+    </include>
 
-    <!-- ✅ Correct executable name -->
-    <node pkg="cartographer_ros"
-        exec="cartographer_occupancy_grid_node"
-        name="occupancy_grid_node"
-        output="screen"
-        args="-resolution 0.05 -publish_period_sec 1.0">
-    <param name="use_sim_time" value="false"/> <!-- or true if sim -->
-    </node>
-
+    <!-- Include Nav2 launch (Navigation2 stack without map server/AMCL) -->
+    <include file="$(find-pkg-share nav2_bringup)/launch/navigation_launch.py">
+        <!-- Pass the Nav2 parameters file and use_sim_time setting -->
+        <arg name="params_file" value="$(find-pkg-share my_robot_bringup)/config/nav2_params.yaml"/>
+        <arg name="use_sim_time" value="false"/>
+    </include>
 
 </launch>
