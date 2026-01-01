@@ -58,7 +58,7 @@ https://photos.app.goo.gl/bRwovGnZpZGCW4xPA
 - **Navigation:** Nav2 (tuned costmaps + custom recovery behaviors)
 - **Control:** `ros2_control` (diff drive)
 - **Simulation/Visualization:** Gazebo + RViz2
-- **Languages:** C++ + Python
+- **Languages:** C, C++, Python
 
 ---
 
