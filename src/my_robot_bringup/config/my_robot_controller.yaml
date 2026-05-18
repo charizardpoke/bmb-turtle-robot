@@ -82,8 +82,8 @@ diff_drive_controller: # A Unique Name - it could be abc, xyz, bla bla bla
     #   description: "Publishing rate (Hz) of the odometry and TF messages.",
     # }
 
-    linear.x.max_velocity: 1.0
-    linear.x.min_velocity: -1.0
+    linear.x.max_velocity: 0.1
+    linear.x.min_velocity: -0.1
 
     # linear:
     #   x:
@@ -107,8 +107,8 @@ diff_drive_controller: # A Unique Name - it could be abc, xyz, bla bla bla
     #     }
     #     min_velocity: { . . . . . . . . . . . . . . . . . . 
 
-    angular.z.max_velocity: 5.0
-    angular.z.min_velocity: -5.0
+    angular.z.max_velocity: 1.0
+    angular.z.min_velocity: -1.0
     # angular:
     #   z:
     #     max_velocity: {
