@@ -192,6 +192,8 @@ return_type mrh::PCA9685BTS7960::write(const rclcpp::Time &, const rclcpp::Durat
     return u;
   };
 
+  const double right_speed_scale = 3.00;  // left wheel 10% slower 
+
   const double uL = to_duty(cmd_[0], invert_left_);
   const double uR = to_duty(cmd_[1], invert_right_);
 

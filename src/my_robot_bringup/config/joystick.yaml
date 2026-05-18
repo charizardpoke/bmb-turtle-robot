@@ -8,7 +8,7 @@ teleop_node:
       x: 7  # # D-pad vertical axis
     
     scale_linear:
-      x: 0.15  # Normal linear velocity scaling factor (m/s) - reduces sensitivity for precise control
+      x: 0.1  # Normal linear velocity scaling factor (m/s) - reduces sensitivity for precise control
     
     scale_linear_turbo:
       x: 0.2  # Turbo mode linear velocity scaling factor (m/s) - full speed when turbo is enabled
@@ -18,10 +18,10 @@ teleop_node:
       yaw: 6  # Joystick axis number for left/right rotation (typically left stick horizontal)
     
     scale_angular:
-      yaw: 4.0  # Normal angular velocity scaling factor (rad/s) - reduces turning sensitivity
+      yaw: 3.0  # Normal angular velocity scaling factor (rad/s) - reduces turning sensitivity
     
     scale_angular_turbo:
-      yaw: 5.0  # Turbo mode angular velocity scaling factor (rad/s) - full turning speed with turbo
+      yaw: 4.0  # Turbo mode angular velocity scaling factor (rad/s) - full turning speed with turbo
     
     # SAFETY AND CONTROL BUTTONS (Xbox Controller Mapping)
     require_enable_button: false  # Requires holding an enable button to move (deadman switch for safety)

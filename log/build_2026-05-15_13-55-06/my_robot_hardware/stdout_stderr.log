@@ -1,0 +1,53 @@
+[ 50%] [32mBuilding CXX object CMakeFiles/pca9685_bts7960.dir/src/pca9685_bts7960.cpp.o[0m
+[01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn my_robot_hardware::PCA9685BTS7960::[01;32m[Kon_init[m[K(const hardware_interface::HardwareInfo&)[m[K’:
+[01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:54:31:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvirtual rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn hardware_interface::HardwareComponentInterface::[01;32m[Kon_init[m[K(const hardware_interface::HardwareInfo&)[m[K’ is deprecated: Use on_init(const HardwareComponentInterfaceParams & params) instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+   54 | [01;35m[KemInterface::on_init(info)[m[K != CallbackReturn::SUCCESS) return CallbackReturn::ERROR;
+      | [01;35m[K~~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+
+In file included from [01m[K/opt/ros/jazzy/include/hardware_interface/hardware_interface/system_interface.hpp:18[m[K,
+                 from [01m[K/home/pi/ros2_ws/src/my_robot_hardware/include/my_robot_hardware/pca9685_bts7960.hpp:7[m[K,
+                 from [01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:1[m[K:
+[01m[K/opt/ros/jazzy/include/hardware_interface/hardware_interface/hardware_component_interface.hpp:226:26:[m[K [01;36m[Knote: [m[Kdeclared here
+  226 | tual CallbackReturn [01;36m[Kon_init[m[K(const HardwareInfo & hardware_info)
+      |                     [01;36m[K^~~~~~~[m[K
+
+[01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::return_type my_robot_hardware::PCA9685BTS7960::[01;32m[Kwrite[m[K(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
+[01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:195:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kleft_speed_scale[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+  195 |   const double [01;35m[Kleft_speed_scale[m[K = 1.90;  // left wheel 20% faster
+      |                [01;35m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:[m[K In member function ‘[01m[Kvoid my_robot_hardware::PCA9685BTS7960::[01;32m[Kpca_set_pwm[m[K(int, uint16_t, uint16_t)[m[K’:
+[01m[K/home/pi/ros2_ws/src/my_robot_hardware/src/pca9685_bts7960.cpp:230:61:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kon[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  230 | t ch, [01;35m[Kstd::uint16_t on[m[K, std::uint16_t off) noexcept
+      |       [01;35m[K~~~~~~~~~~~~~~^~[m[K
+
+[100%] [32m[1mLinking CXX shared library libpca9685_bts7960.so[0m
+[100%] Built target pca9685_bts7960
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware//pca9685_bts7960.plugin.xml
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/include/my_robot_hardware/pca9685_bts7960.hpp
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/pca9685_bts7960.plugin.xml
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/library_path.sh
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/library_path.dsv
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/package_run_dependencies/my_robot_hardware
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/parent_prefix_path/my_robot_hardware
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/path.sh
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/environment/path.dsv
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.bash
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.sh
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.zsh
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/local_setup.dsv
+-- Symlinking: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/package.dsv
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/packages/my_robot_hardware
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/ament_index/resource_index/hardware_interface__pluginlib__plugin/my_robot_hardware
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/ament_cmake_export_targets-extras.cmake
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/my_robot_hardwareConfig.cmake
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/my_robot_hardwareConfig-version.cmake
+-- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/package.xml
+-- Installing: /home/pi/ros2_ws/install/my_robot_hardware/lib/libpca9685_bts7960.so
+-- Set non-toolchain portion of runtime path of "/home/pi/ros2_ws/install/my_robot_hardware/lib/libpca9685_bts7960.so" to ""
+-- Up-to-date: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/export_my_robot_hardwareExport.cmake
+-- Up-to-date: /home/pi/ros2_ws/install/my_robot_hardware/share/my_robot_hardware/cmake/export_my_robot_hardwareExport-noconfig.cmake

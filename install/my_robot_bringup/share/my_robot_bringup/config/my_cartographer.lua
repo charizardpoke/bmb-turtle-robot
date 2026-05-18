@@ -1,1 +1,0 @@
-/home/pi/ros2_ws/src/my_robot_bringup/config/my_cartographer.lua

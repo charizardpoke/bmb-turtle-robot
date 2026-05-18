@@ -29,7 +29,7 @@ diff_drive_controller: # A Unique Name - it could be abc, xyz, bla bla bla
     left_wheel_names: ["base_left_wheel_joint"] # providing parameter
     right_wheel_names: ["base_right_wheel_joint"]
 
-    wheel_separation: 0.08  # 80mm
+    wheel_separation: 0.235  # 80mm
     wheel_radius: 0.036     # 36mm radius
 
     odom_frame_id: "odom" # providing default parameter
@@ -107,8 +107,8 @@ diff_drive_controller: # A Unique Name - it could be abc, xyz, bla bla bla
     #     }
     #     min_velocity: { . . . . . . . . . . . . . . . . . . 
 
-    angular.z.max_velocity: 10.0
-    angular.z.min_velocity: -10.0
+    angular.z.max_velocity: 5.0
+    angular.z.min_velocity: -5.0
     # angular:
     #   z:
     #     max_velocity: {

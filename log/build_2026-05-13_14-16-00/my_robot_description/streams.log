@@ -1,0 +1,40 @@
+[0.030s] Invoking command in '/home/pi/ros2_ws/build/my_robot_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/pi/ros2_ws/src/my_robot_description -DCMAKE_INSTALL_PREFIX=/home/pi/ros2_ws/install/my_robot_description
+[0.204s] -- Found ament_cmake: 2.5.4 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.642s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.858s] -- Configuring done (0.7s)
+[0.887s] -- Generating done (0.0s)
+[0.893s] -- Build files have been written to: /home/pi/ros2_ws/build/my_robot_description
+[0.898s] Invoked command in '/home/pi/ros2_ws/build/my_robot_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/pi/ros2_ws/src/my_robot_description -DCMAKE_INSTALL_PREFIX=/home/pi/ros2_ws/install/my_robot_description
+[0.901s] Invoking command in '/home/pi/ros2_ws/build/my_robot_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/pi/ros2_ws/build/my_robot_description -- -j4 -l4
+[0.979s] Invoked command in '/home/pi/ros2_ws/build/my_robot_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/pi/ros2_ws/build/my_robot_description -- -j4 -l4
+[0.999s] Invoking command in '/home/pi/ros2_ws/build/my_robot_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/pi/ros2_ws/build/my_robot_description
+[1.015s] -- Install configuration: ""
+[1.016s] -- Execute custom install script
+[1.017s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/arm.ros2_control.xacro
+[1.017s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/arm.xacro
+[1.017s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/camera.xacro
+[1.018s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/common_properties.xacro
+[1.018s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/lidar.xacro
+[1.018s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/mobile_base.ros2_control.xacro
+[1.018s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/mobile_base.xacro
+[1.018s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/my_robot.urdf.xacro
+[1.019s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//urdf/my_robot_gazebo_ros2_control.xacro
+[1.021s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//launch/display.launch.py
+[1.021s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//launch/display.launch.xml
+[1.023s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description//rviz/urdf_config.rviz
+[1.023s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/ament_index/resource_index/package_run_dependencies/my_robot_description
+[1.024s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/ament_index/resource_index/parent_prefix_path/my_robot_description
+[1.025s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/environment/ament_prefix_path.sh
+[1.025s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/environment/ament_prefix_path.dsv
+[1.026s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/environment/path.sh
+[1.026s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/environment/path.dsv
+[1.027s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/local_setup.bash
+[1.027s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/local_setup.sh
+[1.028s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/local_setup.zsh
+[1.029s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/local_setup.dsv
+[1.029s] -- Symlinking: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/package.dsv
+[1.047s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/ament_index/resource_index/packages/my_robot_description
+[1.049s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/cmake/my_robot_descriptionConfig.cmake
+[1.050s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/cmake/my_robot_descriptionConfig-version.cmake
+[1.050s] -- Up-to-date symlink: /home/pi/ros2_ws/install/my_robot_description/share/my_robot_description/package.xml
+[1.053s] Invoked command in '/home/pi/ros2_ws/build/my_robot_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/pi/ros2_ws/build/my_robot_description
