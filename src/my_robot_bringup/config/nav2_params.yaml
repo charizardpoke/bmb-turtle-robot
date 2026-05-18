@@ -96,10 +96,10 @@ local_costmap:
     update_frequency: 10.0
     publish_frequency: 5.0
     footprint:
-      - [0.21,  0.195]
-      - [0.21, -0.195]
-      - [-0.21, -0.195]
-      - [-0.21,  0.195]
+      - [0.14,  0.15]
+      - [0.14, -0.15]
+      - [-0.14, -0.15]
+      - [-0.14,  0.15]
     plugins: ["obstacle_layer","inflation_layer"]
     obstacle_layer:
       plugin: "nav2_costmap_2d::ObstacleLayer"
