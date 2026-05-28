@@ -38,7 +38,7 @@ controller_server:
     cmd_vel_topic: /diff_drive_controller/cmd_vel
     controller_plugins: ["FollowPath"]
     FollowPath:
-      plugin: "nav2_regulated_pure_pursuit_controller/RegulatedPurePursuitController"
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
       desired_linear_vel: 0.25
       max_linear_vel: 0.5
       max_angular_vel: 1.5
@@ -57,8 +57,9 @@ planner_server:
     expected_planner_frequency: 5.0
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      plugin: "nav2_navfn_planner::NavfnPlanner"
       tolerance: 0.25
+      use_astar: false
       allow_unknown: true
 
 bt_navigator:
@@ -74,13 +75,13 @@ behavior_server:
     use_sim_time: false
     behavior_plugins: ["Spin","BackUp","Wait"]
     Spin:
-      plugin: "nav2_recoveries/Spin"
+      plugin: "nav2_recoveries::Spin"
     BackUp:
-      plugin: "nav2_recoveries/BackUp"
+      plugin: "nav2_recoveries::BackUp"
       backup_vel: -0.2
       backup_distance: 0.5
     Wait:
-      plugin: "nav2_recoveries/Wait"
+      plugin: "nav2_recoveries::Wait"
       wait_duration: 5.0
 
 # Local costmap (no changes needed)
