@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- paths -->
+    <!-- <let name="urdf_path" value="$(find-pkg-share my_robot_description)/urdf/my_robot_gazebo_ros2_control.xacro"/> -->
+    <let name="urdf_path" value="$(find-pkg-share my_robot_description)/urdf/my_robot.urdf.xacro"/>
+
+
+    <let name="gazebo_config_path" value="$(find-pkg-share my_robot_bringup)/config/gazebo_bridge.yaml"/>
+    <let name="rviz_config_path" value="$(find-pkg-share my_robot_description)/rviz/urdf_config.rviz"/>
+
+    <!-- state publishers -->
+    <node pkg="robot_state_publisher" exec="robot_state_publisher">
+        <param name="robot_description" value="$(command 'xacro $(var urdf_path)')"/>
+    </node>
+    <!-- The code below sometimes its removed wheels show and sometimes do not -->
+    <!-- <node pkg="joint_state_publisher" exec="joint_state_publisher"/> -->
+
+    <!-- start gazebo simulation -->
+    <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+        <arg name="gz_args" value="$(find-pkg-share my_robot_bringup)/worlds/obstacles_world.sdf -r"/>
+    </include>
+
+    <!-- spawn robot into sim -->
+    <node pkg="ros_gz_sim" exec="create" args="-topic robot_description"/>
+
+    <!-- bridge and controllers -->
+    <node pkg="ros_gz_bridge" exec="parameter_bridge">
+        <param name="config_file" value="$(var gazebo_config_path)"/>
+        <remap from="/model/my_robot/cmd_vel" to="/diff_drive_controller/cmd_vel"/>
+    </node>
+
+    <node pkg="controller_manager" exec="spawner" args="joint_state_broadcaster"/>
+    <node pkg="controller_manager" exec="spawner" args="diff_drive_controller"/>
+
+    <!-- rviz -->
+    <node pkg="rviz2" exec="rviz2" output="screen" args="-d $(var rviz_config_path)"/>
+</launch>
+
+
+    <!-- <arg name="gz_args" value="$(find-pkg-share my_robot_bringup)/worlds/obstacles_world.sdf -r"/>  -->
