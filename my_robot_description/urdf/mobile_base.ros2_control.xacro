@@ -63,7 +63,7 @@
 
       <param name="encoder_cpr">5760</param>
       <param name="invert_left_encoder">false</param>
-      <param name="invert_right_encoder">false</param>
+      <param name="invert_right_encoder">true</param>
 
       <!-- Motor power relays -->
       <param name="use_relays">true</param>
