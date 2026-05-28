@@ -73,15 +73,23 @@ bt_navigator:
 behavior_server:
   ros__parameters:
     use_sim_time: false
-    behavior_plugins: ["Spin","BackUp","Wait"]
-    Spin:
-      plugin: "nav2_recoveries::Spin"
-    BackUp:
-      plugin: "nav2_recoveries::BackUp"
+    local_costmap_topic: local_costmap/costmap_raw
+    global_costmap_topic: global_costmap/costmap_raw
+    local_footprint_topic: local_costmap/published_footprint
+    global_footprint_topic: global_costmap/published_footprint
+    cycle_frequency: 10.0
+    behavior_plugins: ["spin", "backup", "wait"]
+
+    spin:
+      plugin: "nav2_behaviors::Spin"
+
+    backup:
+      plugin: "nav2_behaviors::BackUp"
       backup_vel: -0.2
-      backup_distance: 0.5
-    Wait:
-      plugin: "nav2_recoveries::Wait"
+      backup_dist: 0.5
+
+    wait:
+      plugin: "nav2_behaviors::Wait"
       wait_duration: 5.0
 
 # Local costmap (no changes needed)
