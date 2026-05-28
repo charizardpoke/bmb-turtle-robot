@@ -59,11 +59,11 @@
 
       <!-- Right encoder -->
       <param name="right_encoder_a">17</param>
-      <param name="right_encoder_b">-1</param>
+      <param name="right_encoder_b">27</param>
 
       <param name="encoder_cpr">5760</param>
       <param name="invert_left_encoder">false</param>
-      <param name="invert_right_encoder">true</param>
+      <param name="invert_right_encoder">false</param>
 
       <!-- Motor power relays -->
       <param name="use_relays">true</param>
