@@ -45,7 +45,7 @@
       <param name="max_speed_rad_s">6.0</param>
       <param name="deadband">0.04</param>
       <param name="invert_left">false</param>
-      <param name="invert_right">false</param>
+      <param name="invert_right">true</param>
 
       <param name="dry_run">false</param>
 
