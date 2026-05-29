@@ -137,7 +137,11 @@
     </include>
 
     <!-- Include Nav2 launch (Navigation2 stack without map server/AMCL) -->
-    
+    <include file="$(find-pkg-share nav2_bringup)/launch/navigation_launch.py">
+        <arg name="params_file" value="$(find-pkg-share my_robot_bringup)/config/nav2_params.yaml"/>
+        <arg name="use_sim_time" value="false"/>
+    </include>
+
     <!-- LED / Buzzer / Button status node -->
     <node pkg="my_robot_bringup"
       exec="led_status_node.py"
