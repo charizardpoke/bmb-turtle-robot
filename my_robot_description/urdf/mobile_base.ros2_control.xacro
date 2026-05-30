@@ -42,7 +42,7 @@
       <param name="right_rpw">3</param>
 
       <!-- control mapping -->
-      <param name="max_speed_rad_s">6.0</param>
+      <param name="max_speed_rad_s">3.0</param>
       <param name="deadband">0.04</param>
       <param name="invert_left">false</param>
       <param name="invert_right">true</param>
