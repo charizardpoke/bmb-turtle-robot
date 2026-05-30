@@ -61,7 +61,7 @@ stage_5() {
 
 stage_6() {
   echo "Stage 6: Turn 180 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 10
+  publish_cmd 0.0 "$TURN_SPEED" 12
   stop_now
 }
 
@@ -97,7 +97,7 @@ stage_11() {
 
 stage_12() {
   echo "Stage 12: Turn 180 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 10
+  publish_cmd 0.0 "$TURN_SPEED" 12
   stop_now
 }
 
