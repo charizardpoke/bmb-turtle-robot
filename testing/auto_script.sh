@@ -42,44 +42,33 @@ stop_now() {
   publish_cmd 0.0 0.0 10
 }
 
-stage_1() {
-  echo "Stage 1: Go straight for 0.9 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 9
+shortForward() {
+  echo "Go straight for 1 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 10
   stop_now
 }
 
-stage_2() {
-  echo "Stage 2: Turn right 90 degrees"
-  publish_cmd 0.0 "-$TURN_SPEED" 5
+turnRight() {
+  echo "Turn right 90 degrees"
+  publish_cmd 0.0 "-$TURN_SPEED" 6
   stop_now
 }
 
-stage_3() {
-  echo "Stage 3: Go straight for 1.7 seconds"
+longForward() {
+  echo "Go straight for 1.7 seconds"
   publish_cmd "$FORWARD_SPEED" 0.0 17
   stop_now
 }
 
-stage_4() {
-  echo "Stage 4: Turn right 90 degrees"
-  publish_cmd 0.0 "-$TURN_SPEED" 5
-  stop_now
-}
-
-stage_5() {
-  echo "Stage 5: Go straight for 0.9 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 9
-  stop_now
-}
 
 run_all() {
   echo "Running path: Stage 1 to Stage 5 only"
 
-  stage_1
-  stage_2
-  stage_3
-  stage_4
-  stage_5
+  shortForward
+  turnRight
+  longForward
+  turnRight
+  shortForward
 
   stop_now
   echo "Path complete."

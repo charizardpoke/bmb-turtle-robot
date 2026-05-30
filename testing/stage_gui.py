@@ -13,12 +13,12 @@ class StageGUI:
         self.process = None
 
         self.root = tk.Tk()
-        self.root.title("BMB Turtle Auto Script GUI")
-        self.root.geometry("350x260")
+        self.root.title("WALL-E Auto Script GUI")
+        self.root.geometry("350x360")
 
         tk.Label(
             self.root,
-            text="BMB Turtle Auto Control",
+            text="WALL-E Auto Control",
             font=("Arial", 16)
         ).pack(pady=15)
 
