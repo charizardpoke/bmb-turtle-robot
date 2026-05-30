@@ -65,39 +65,39 @@ stage_6() {
   stop_now
 }
 
+stage_7() {
+  echo "Stage 8: Go straight for 0.9 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 9
+  stop_now
+}
+
 stage_8() {
-  echo "Stage 8: Go straight for 2 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 20
+  echo "Stage 9: Turn left 90 degrees"
+  publish_cmd 0.0 "$TURN_SPEED" 5
   stop_now
 }
 
 stage_9() {
-  echo "Stage 9: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 32
+  echo "Stage 10: Go straight for 1.5 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 15
   stop_now
 }
 
 stage_10() {
-  echo "Stage 10: Go straight for 3 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 30
+  echo "Stage 11: Turn left 90 degrees"
+  publish_cmd 0.0 "$TURN_SPEED" 5
   stop_now
 }
 
 stage_11() {
-  echo "Stage 11: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 32
+  echo "Stage 12: Go straight for 0.9 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 9
   stop_now
 }
 
 stage_12() {
-  echo "Stage 12: Go straight for 2 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 20
-  stop_now
-}
-
-stage_13() {
   echo "Stage 13: Turn 180 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 63
+  publish_cmd 0.0 "$TURN_SPEED" 13
   stop_now
 }
 
@@ -150,16 +150,7 @@ run_all() {
   sleep 5
 
   stage_12
-  echo "Waiting 5 seconds before next stage..."
-  sleep 5
 
-  stage_13
   stop_now
-
   echo "Full path complete."
 }
-
-echo "Rectangle test loaded."
-echo "Run one stage at a time: stage_1, stage_2, stage_3..."
-echo "Run full path: run_all"
-echo "Emergency stop: stop_now"
