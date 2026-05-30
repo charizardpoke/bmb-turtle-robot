@@ -1,3 +1,6 @@
+# RUNNING COMMANDS - LAPTOP:
+# python3 stage_gui.py
+
 import tkinter as tk
 import subprocess
 
