@@ -1,7 +1,3 @@
-# RUNNING COMMANDS:
-# cd ~/ros2_ws/src/testing
-# python3 stage_gui.py
-
 import tkinter as tk
 import subprocess
 
@@ -12,12 +8,12 @@ SCRIPT_PATH = "./auto_script.sh"
 class StageGUI:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("BMB Turtle Auto Script GUI")
-        self.root.geometry("350x400")
+        self.root.title("Wall-E Auto Script GUI")
+        self.root.geometry("350x250")
 
         tk.Label(
             self.root,
-            text="Auto Script Stage Control",
+            text="Auto Script Control",
             font=("Arial", 16)
         ).pack(pady=15)
 
@@ -38,42 +34,10 @@ class StageGUI:
 
         tk.Button(
             self.root,
-            text="Stage 1",
+            text="Run All",
             width=22,
             height=2,
-            command=lambda: self.run_stage("stage_1")
-        ).pack(pady=5)
-
-        tk.Button(
-            self.root,
-            text="Stage 2",
-            width=22,
-            height=2,
-            command=lambda: self.run_stage("stage_2")
-        ).pack(pady=5)
-
-        tk.Button(
-            self.root,
-            text="Stage 3",
-            width=22,
-            height=2,
-            command=lambda: self.run_stage("stage_3")
-        ).pack(pady=5)
-
-        tk.Button(
-            self.root,
-            text="Stage 4",
-            width=22,
-            height=2,
-            command=lambda: self.run_stage("stage_4")
-        ).pack(pady=5)
-
-        tk.Button(
-            self.root,
-            text="Stage 5",
-            width=22,
-            height=2,
-            command=lambda: self.run_stage("stage_5")
+            command=lambda: self.run_command("run_all")
         ).pack(pady=5)
 
         tk.Button(
@@ -83,38 +47,33 @@ class StageGUI:
             height=2,
             bg="red",
             fg="white",
-            command=lambda: self.run_stage("stop_now")
+            command=lambda: self.run_command("stop_now")
         ).pack(pady=15)
 
     def load_script(self):
         command = f"source {SCRIPT_PATH} && echo loaded"
 
-        try:
-            result = subprocess.run(
-                ["bash", "-lc", command],
-                capture_output=True,
-                text=True
-            )
+        result = subprocess.run(
+            ["bash", "-lc", command],
+            capture_output=True,
+            text=True
+        )
 
-            if result.returncode == 0:
-                self.status_label.config(text="Status: auto_script.sh loaded")
-            else:
-                self.status_label.config(text="Status: Load failed")
-                print(result.stderr)
+        if result.returncode == 0:
+            self.status_label.config(text="Status: auto_script.sh loaded")
+        else:
+            self.status_label.config(text="Status: Load failed")
+            print(result.stderr)
 
-        except Exception as error:
-            self.status_label.config(text="Status: Error loading script")
-            print(error)
+    def run_command(self, command_name):
+        self.status_label.config(text=f"Status: Running {command_name}")
 
-    def run_stage(self, stage_name):
-        self.status_label.config(text=f"Status: Running {stage_name}")
-
-        command = f"source {SCRIPT_PATH} && {stage_name}"
+        command = f"source {SCRIPT_PATH} && {command_name}"
 
         try:
             subprocess.Popen(["bash", "-lc", command])
         except Exception as error:
-            self.status_label.config(text=f"Status: Error running {stage_name}")
+            self.status_label.config(text=f"Status: Error running {command_name}")
             print(error)
 
     def run(self):
