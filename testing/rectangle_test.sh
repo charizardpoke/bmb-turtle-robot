@@ -9,11 +9,9 @@ TURN_SPEED=0.5
 
 # Time settings converted to message counts
 # At -r 10:
-# 12 messages = 1.2 sec
-# 20 messages = 2 sec
-# 30 messages = 3 sec
-# 32 messages = about 90 degree turn
-# 63 messages = about 180 degree turn
+# 9 messages  = 0.9 sec
+# 17 messages = 1.7 sec
+# 10 messages = 1.0 sec stop
 
 publish_cmd() {
   local linear_x=$1
@@ -59,65 +57,15 @@ stage_5() {
   stop_now
 }
 
-# stage_6() {
-#   echo "Stage 6: Turn 180 degrees"
-#   publish_cmd 0.0 "$TURN_SPEED" 13
-#   stop_now
-# }
-
-# stage_7() {
-#   echo "Stage 7: Go straight for 0.9 seconds"
-#   publish_cmd "$FORWARD_SPEED" 0.0 9
-#   stop_now
-# }
-
-# stage_8() {
-#   echo "Stage 8: Turn left 90 degrees"
-#   publish_cmd 0.0 "$TURN_SPEED" 5
-#   stop_now
-# }
-
-# stage_9() {
-#   echo "Stage 9: Go straight for 1.7 seconds"
-#   publish_cmd "$FORWARD_SPEED" 0.0 17
-#   stop_now
-# }
-
-# stage_10() {
-#   echo "Stage 10: Turn left 90 degrees"
-#   publish_cmd 0.0 "$TURN_SPEED" 5
-#   stop_now
-# }
-
-# stage_11() {
-#   echo "Stage 11: Go straight for 0.9 seconds"
-#   publish_cmd "$FORWARD_SPEED" 0.0 9
-#   stop_now
-# }
-
-# stage_12() {
-#   echo "Stage 12: Turn 180 degrees"
-#   publish_cmd 0.0 "$TURN_SPEED" 12
-#   stop_now
-}
-
 run_all() {
-  echo "Running full path..."
-  echo "Stage 1 starts immediately."
+  echo "Running path: Stage 1 to Stage 5 only"
 
   stage_1
   stage_2
   stage_3
   stage_4
   stage_5
-  # stage_6
-  # stage_7
-  # stage_8
-  # stage_9
-  # stage_10
-  # stage_11
-  # stage_12
 
   stop_now
-  echo "Full path complete."
+  echo "Path complete."
 }
