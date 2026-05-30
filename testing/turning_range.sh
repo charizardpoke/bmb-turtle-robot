@@ -8,7 +8,7 @@ TURN_SPEED=0.5
 # Change this to tune full 360 turn time
 # Bigger number = turns longer
 # Smaller number = turns less
-TURN_SECONDS=1.2
+TURN_SECONDS=3
 
 publish_cmd_seconds() {
   local linear_x=$1
