@@ -4,7 +4,7 @@ CMD_TOPIC=/diff_drive_controller/cmd_vel
 RATE=10
 
 # Speed settings
-FORWARD_SPEED=0.5
+FORWARD_SPEED=0.3
 TURN_SPEED=0.5
 
 # Time settings converted to message counts
@@ -106,49 +106,16 @@ run_all() {
   echo "Stage 1 starts immediately."
 
   stage_1
-  echo "Waiting 5 seconds before Stage 2..."
-  sleep 5
-
   stage_2
-  echo "Waiting 5 seconds before Stage 3..."
-  sleep 5
-
   stage_3
-  echo "Waiting 5 seconds before Stage 4..."
-  sleep 5
-
   stage_4
-  echo "Waiting 5 seconds before Stage 5..."
-  sleep 5
-
   stage_5
-  echo "Waiting 5 seconds before Stage 6..."
-  sleep 5
-
   stage_6
-  echo "Waiting 5 seconds before Stage 7..."
-  sleep 5
-
   stage_7
-  echo "Waiting 5 seconds before Stage 8..."
-  sleep 5
-
   stage_8
-  echo "Waiting 5 seconds before Stage 9..."
-  sleep 5
-
   stage_9
-  echo "Waiting 5 seconds before Stage 10..."
-  sleep 5
-
   stage_10
-  echo "Waiting 5 seconds before Stage 11..."
-  sleep 5
-
   stage_11
-  echo "Waiting 5 seconds before Stage 12..."
-  sleep 5
-
   stage_12
 
   stop_now
