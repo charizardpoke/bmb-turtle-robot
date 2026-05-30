@@ -1,3 +1,11 @@
+# RUNNING COMMANDS:
+# anticlockwise_turn_90
+# anticlockwise_turn_180
+# anticlockwise_turn_360
+# clockwise_90
+# clockwise_180
+# lockwise_360
+
 #!/bin/bash
 
 CMD_TOPIC=/diff_drive_controller/cmd_vel
