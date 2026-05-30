@@ -61,13 +61,33 @@ longForward() {
 }
 
 
-run_all() {
+clockwise() {
   echo "Running path: Stage 1 to Stage 5 only"
 
   shortForward
   turnRight
   longForward
   turnRight
+  shortForward
+
+  stop_now
+  echo "Path complete."
+}
+
+turnLeft() {
+  echo "Turn right 90 degrees"
+  publish_cmd 0.0 "$TURN_SPEED" 6
+  stop_now
+}
+
+
+anticlockwise() {
+  echo "Running path: Stage 1 to Stage 5 only"
+
+  shortForward
+  turnLeft
+  longForward
+  turnLeft
   shortForward
 
   stop_now

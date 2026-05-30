@@ -14,7 +14,7 @@ class StageGUI:
 
         self.root = tk.Tk()
         self.root.title("WALL-E Auto Script GUI")
-        self.root.geometry("350x360")
+        self.root.geometry("350x420")
 
         tk.Label(
             self.root,
@@ -39,12 +39,22 @@ class StageGUI:
 
         tk.Button(
             self.root,
-            text="Run All",
+            text="Clockwise",
             width=22,
             height=2,
             bg="green",
             fg="white",
-            command=self.run_all
+            command=self.clockwise
+        ).pack(pady=5)
+
+        tk.Button(
+            self.root,
+            text="Anticlockwise",
+            width=22,
+            height=2,
+            bg="blue",
+            fg="white",
+            command=self.anticlockwise
         ).pack(pady=5)
 
         tk.Button(
@@ -72,10 +82,19 @@ class StageGUI:
             self.status_label.config(text="Status: Load failed")
             print(result.stderr)
 
-    def run_all(self):
-        self.status_label.config(text="Status: Running all stages")
+    def clockwise(self):
+        self.status_label.config(text="Status: Running clockwise")
 
-        command = f"source {SCRIPT_PATH} && run_all"
+        command = f"source {SCRIPT_PATH} && clockwise"
+
+        self.process = subprocess.Popen(
+            ["bash", "-lc", command]
+        )
+
+    def anticlockwise(self):
+        self.status_label.config(text="Status: Running anticlockwise")
+
+        command = f"source {SCRIPT_PATH} && anticlockwise"
 
         self.process = subprocess.Popen(
             ["bash", "-lc", command]
