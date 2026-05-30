@@ -36,67 +36,67 @@ stage_1() {
 }
 
 stage_2() {
-  echo "Stage 3: Turn right 90 degrees"
+  echo "Stage 2: Turn right 90 degrees"
   publish_cmd 0.0 "-$TURN_SPEED" 5
   stop_now
 }
 
 stage_3() {
-  echo "Stage 4: Go straight for 1.5 seconds"
+  echo "Stage 3: Go straight for 1.5 seconds"
   publish_cmd "$FORWARD_SPEED" 0.0 15
   stop_now
 }
 
 stage_4() {
-  echo "Stage 5: Turn right 90 degrees"
+  echo "Stage 4: Turn right 90 degrees"
   publish_cmd 0.0 "-$TURN_SPEED" 5
   stop_now
 }
 
 stage_5() {
-  echo "Stage 6: Go straight for 0.9 seconds"
+  echo "Stage 5: Go straight for 0.9 seconds"
   publish_cmd "$FORWARD_SPEED" 0.0 9
   stop_now
 }
 
 stage_6() {
-  echo "Stage 7: Turn 180 degrees"
+  echo "Stage 6: Turn 180 degrees"
   publish_cmd 0.0 "$TURN_SPEED" 13
   stop_now
 }
 
 stage_7() {
-  echo "Stage 8: Go straight for 0.9 seconds"
+  echo "Stage 7: Go straight for 0.9 seconds"
   publish_cmd "$FORWARD_SPEED" 0.0 9
   stop_now
 }
 
 stage_8() {
-  echo "Stage 9: Turn left 90 degrees"
+  echo "Stage 8: Turn left 90 degrees"
   publish_cmd 0.0 "$TURN_SPEED" 5
   stop_now
 }
 
 stage_9() {
-  echo "Stage 10: Go straight for 1.5 seconds"
+  echo "Stage 9: Go straight for 1.5 seconds"
   publish_cmd "$FORWARD_SPEED" 0.0 15
   stop_now
 }
 
 stage_10() {
-  echo "Stage 11: Turn left 90 degrees"
+  echo "Stage 10: Turn left 90 degrees"
   publish_cmd 0.0 "$TURN_SPEED" 5
   stop_now
 }
 
 stage_11() {
-  echo "Stage 12: Go straight for 0.9 seconds"
+  echo "Stage 11: Go straight for 0.9 seconds"
   publish_cmd "$FORWARD_SPEED" 0.0 9
   stop_now
 }
 
 stage_12() {
-  echo "Stage 13: Turn 180 degrees"
+  echo "Stage 12: Turn 180 degrees"
   publish_cmd 0.0 "$TURN_SPEED" 13
   stop_now
 }
@@ -106,47 +106,47 @@ run_all() {
   echo "Stage 1 starts immediately."
 
   stage_1
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 2..."
   sleep 5
 
   stage_2
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 3..."
   sleep 5
 
   stage_3
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 4..."
   sleep 5
 
   stage_4
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 5..."
   sleep 5
 
   stage_5
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 6..."
   sleep 5
 
   stage_6
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 7..."
   sleep 5
 
   stage_7
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 8..."
   sleep 5
 
   stage_8
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 9..."
   sleep 5
 
   stage_9
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 10..."
   sleep 5
 
   stage_10
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 11..."
   sleep 5
 
   stage_11
-  echo "Waiting 5 seconds before next stage..."
+  echo "Waiting 5 seconds before Stage 12..."
   sleep 5
 
   stage_12
