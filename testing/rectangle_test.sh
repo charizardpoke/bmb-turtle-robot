@@ -4,7 +4,7 @@ CMD_TOPIC=/diff_drive_controller/cmd_vel
 RATE=10
 
 # Speed settings
-FORWARD_SPEED=0.3
+FORWARD_SPEED=0.1
 TURN_SPEED=0.5
 
 # Time settings converted to message counts
@@ -30,8 +30,8 @@ stop_now() {
 }
 
 stage_1() {
-  echo "Stage 1: Go straight for 0.9 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 9
+  echo "Stage 1: Go straight for 1.5 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 15
   stop_now
 }
 
