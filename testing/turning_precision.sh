@@ -5,11 +5,6 @@ RATE=10
 
 TURN_SPEED=0.5
 
-# Change this to tune full 360 turn time
-# Bigger number = turns longer
-# Smaller number = turns less
-TURN_SECONDS=
-
 publish_cmd_seconds() {
   local linear_x=$1
   local angular_z=$2
@@ -30,18 +25,47 @@ stop_now() {
   publish_cmd_seconds 0.0 0.0 1.0
 }
 
-clockwise() {
-  echo "Turning clockwise 360 degrees for $TURN_SECONDS seconds"
-  publish_cmd_seconds 0.0 "-$TURN_SPEED" "$TURN_SECONDS"
+turn_90() {
+  echo "Turning 90 degrees for 0.8 seconds"
+  publish_cmd_seconds 0.0 "$TURN_SPEED" 0.8
   stop_now
 }
 
-anticlockwise() {
-  echo "Turning anticlockwise 360 degrees for $TURN_SECONDS seconds"
-  publish_cmd_seconds 0.0 "$TURN_SPEED" "$TURN_SECONDS"
+turn_180() {
+  echo "Turning 180 degrees for 1.6 seconds"
+  publish_cmd_seconds 0.0 "$TURN_SPEED" 1.6
+  stop_now
+}
+
+turn_360() {
+  echo "Turning 360 degrees for 3.2 seconds"
+  publish_cmd_seconds 0.0 "$TURN_SPEED" 3.2
+  stop_now
+}
+
+clockwise_90() {
+  echo "Turning clockwise 90 degrees for 0.8 seconds"
+  publish_cmd_seconds 0.0 "-$TURN_SPEED" 0.8
+  stop_now
+}
+
+clockwise_180() {
+  echo "Turning clockwise 180 degrees for 1.6 seconds"
+  publish_cmd_seconds 0.0 "-$TURN_SPEED" 1.6
+  stop_now
+}
+
+clockwise_360() {
+  echo "Turning clockwise 360 degrees for 3.2 seconds"
+  publish_cmd_seconds 0.0 "-$TURN_SPEED" 3.2
   stop_now
 }
 
 echo "Loaded turning commands."
-echo "Type: clockwise"
-echo "Type: anticlockwise"
+echo "Use:"
+echo "  anticlockwise_turn_90"
+echo "  anticlockwise_turn_180"
+echo "  anticlockwise_turn_360"
+echo "  clockwise_90"
+echo "  clockwise_180"
+echo "  clockwise_360"
