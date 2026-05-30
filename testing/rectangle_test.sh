@@ -37,7 +37,7 @@ stage_1() {
 
 stage_2() {
   echo "Stage 2: Turn right 90 degrees"
-  publish_cmd 0.0 "-$TURN_SPEED" 4
+  publish_cmd 0.0 "-$TURN_SPEED" 5
   stop_now
 }
 
