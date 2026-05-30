@@ -59,46 +59,46 @@ stage_5() {
   stop_now
 }
 
-stage_6() {
-  echo "Stage 6: Turn 180 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 13
-  stop_now
-}
+# stage_6() {
+#   echo "Stage 6: Turn 180 degrees"
+#   publish_cmd 0.0 "$TURN_SPEED" 13
+#   stop_now
+# }
 
-stage_7() {
-  echo "Stage 7: Go straight for 0.9 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 9
-  stop_now
-}
+# stage_7() {
+#   echo "Stage 7: Go straight for 0.9 seconds"
+#   publish_cmd "$FORWARD_SPEED" 0.0 9
+#   stop_now
+# }
 
-stage_8() {
-  echo "Stage 8: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 5
-  stop_now
-}
+# stage_8() {
+#   echo "Stage 8: Turn left 90 degrees"
+#   publish_cmd 0.0 "$TURN_SPEED" 5
+#   stop_now
+# }
 
-stage_9() {
-  echo "Stage 9: Go straight for 1.7 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 17
-  stop_now
-}
+# stage_9() {
+#   echo "Stage 9: Go straight for 1.7 seconds"
+#   publish_cmd "$FORWARD_SPEED" 0.0 17
+#   stop_now
+# }
 
-stage_10() {
-  echo "Stage 10: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 5
-  stop_now
-}
+# stage_10() {
+#   echo "Stage 10: Turn left 90 degrees"
+#   publish_cmd 0.0 "$TURN_SPEED" 5
+#   stop_now
+# }
 
-stage_11() {
-  echo "Stage 11: Go straight for 0.9 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 9
-  stop_now
-}
+# stage_11() {
+#   echo "Stage 11: Go straight for 0.9 seconds"
+#   publish_cmd "$FORWARD_SPEED" 0.0 9
+#   stop_now
+# }
 
-stage_12() {
-  echo "Stage 12: Turn 180 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 12
-  stop_now
+# stage_12() {
+#   echo "Stage 12: Turn 180 degrees"
+#   publish_cmd 0.0 "$TURN_SPEED" 12
+#   stop_now
 }
 
 run_all() {
@@ -110,13 +110,13 @@ run_all() {
   stage_3
   stage_4
   stage_5
-  stage_6
-  stage_7
-  stage_8
-  stage_9
-  stage_10
-  stage_11
-  stage_12
+  # stage_6
+  # stage_7
+  # stage_8
+  # stage_9
+  # stage_10
+  # stage_11
+  # stage_12
 
   stop_now
   echo "Full path complete."
