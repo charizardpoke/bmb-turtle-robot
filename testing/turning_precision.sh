@@ -40,8 +40,8 @@ turn_90() {
 }
 
 turn_180() {
-  echo "Turning 180 degrees for 1.6 seconds"
-  publish_cmd_seconds 0.0 "$TURN_SPEED" 1.6
+  echo "Turning 180 degrees for 1.2 seconds"
+  publish_cmd_seconds 0.0 "$TURN_SPEED" 1.2
   stop_now
 }
 
@@ -58,8 +58,8 @@ clockwise_90() {
 }
 
 clockwise_180() {
-  echo "Turning clockwise 180 degrees for 1.6 seconds"
-  publish_cmd_seconds 0.0 "-$TURN_SPEED" 1.6
+  echo "Turning clockwise 180 degrees for 1.2 seconds"
+  publish_cmd_seconds 0.0 "-$TURN_SPEED" 1.2
   stop_now
 }
 
