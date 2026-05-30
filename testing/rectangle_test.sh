@@ -42,8 +42,8 @@ stage_2() {
 }
 
 stage_3() {
-  echo "Stage 3: Go straight for 1.8 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 18
+  echo "Stage 3: Go straight for 1.7 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 17
   stop_now
 }
 
@@ -61,7 +61,7 @@ stage_5() {
 
 stage_6() {
   echo "Stage 6: Turn 180 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 12
+  publish_cmd 0.0 "$TURN_SPEED" 13
   stop_now
 }
 
@@ -73,19 +73,19 @@ stage_7() {
 
 stage_8() {
   echo "Stage 8: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 4
+  publish_cmd 0.0 "$TURN_SPEED" 5
   stop_now
 }
 
 stage_9() {
-  echo "Stage 9: Go straight for 1.8 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 18
+  echo "Stage 9: Go straight for 1.7 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 17
   stop_now
 }
 
 stage_10() {
   echo "Stage 10: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 4
+  publish_cmd 0.0 "$TURN_SPEED" 5
   stop_now
 }
 
