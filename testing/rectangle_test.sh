@@ -37,7 +37,7 @@ stage_1() {
 
 stage_2() {
   echo "Stage 2: Turn right 90 degrees"
-  publish_cmd 0.0 "-$TURN_SPEED" 5
+  publish_cmd 0.0 "-$TURN_SPEED" 4
   stop_now
 }
 
@@ -49,7 +49,7 @@ stage_3() {
 
 stage_4() {
   echo "Stage 4: Turn right 90 degrees"
-  publish_cmd 0.0 "-$TURN_SPEED" 5
+  publish_cmd 0.0 "-$TURN_SPEED" 4
   stop_now
 }
 
@@ -73,7 +73,7 @@ stage_7() {
 
 stage_8() {
   echo "Stage 8: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 5
+  publish_cmd 0.0 "$TURN_SPEED" 4
   stop_now
 }
 
@@ -85,7 +85,7 @@ stage_9() {
 
 stage_10() {
   echo "Stage 10: Turn left 90 degrees"
-  publish_cmd 0.0 "$TURN_SPEED" 5
+  publish_cmd 0.0 "$TURN_SPEED" 4
   stop_now
 }
 
