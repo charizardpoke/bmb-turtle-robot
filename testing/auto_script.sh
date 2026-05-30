@@ -75,7 +75,11 @@ stage_5() {
 run_all() {
   echo "Running path: Stage 1 to Stage 5 only"
 
-  
+  stage_1
+  stage_2
+  stage_3
+  stage_4
+  stage_5
 
   stop_now
   echo "Path complete."
