@@ -1,3 +1,9 @@
+# RUNNING COMMANDS:
+# clockwise
+# anticlockwise
+# clockwise
+# anticlockwise
+
 #!/bin/bash
 
 CMD_TOPIC=/diff_drive_controller/cmd_vel
