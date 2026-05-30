@@ -82,8 +82,8 @@ diff_drive_controller: # A Unique Name - it could be abc, xyz, bla bla bla
     #   description: "Publishing rate (Hz) of the odometry and TF messages.",
     # }
 
-    linear.x.max_velocity: 1.0
-    linear.x.min_velocity: -1.0
+    linear.x.max_velocity: 3.0
+    linear.x.min_velocity: -3.0
 
     # linear:
     #   x:
