@@ -1,4 +1,19 @@
-#!/bin/bash
+# RUNNING COMMANDS:
+# source ./auto_script.sh
+# stage_1
+# stage_2
+# stage_3
+# stage_4
+# stage_5
+# stage_6
+# stage_7
+# stage_8
+# stage_9
+# stage_10
+# stage_11
+
+# run_all
+# #!/bin/bash
 
 CMD_TOPIC=/diff_drive_controller/cmd_vel
 RATE=10
