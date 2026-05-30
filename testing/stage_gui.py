@@ -10,13 +10,15 @@ SCRIPT_PATH = "./auto_script.sh"
 
 class StageGUI:
     def __init__(self):
+        self.process = None
+
         self.root = tk.Tk()
-        self.root.title("Wall-E Auto Script GUI")
-        self.root.geometry("350x250")
+        self.root.title("BMB Turtle Auto Script GUI")
+        self.root.geometry("350x260")
 
         tk.Label(
             self.root,
-            text="Auto Script Control",
+            text="BMB Turtle Auto Control",
             font=("Arial", 16)
         ).pack(pady=15)
 
@@ -40,7 +42,9 @@ class StageGUI:
             text="Run All",
             width=22,
             height=2,
-            command=lambda: self.run_command("run_all")
+            bg="green",
+            fg="white",
+            command=self.run_all
         ).pack(pady=5)
 
         tk.Button(
@@ -50,7 +54,7 @@ class StageGUI:
             height=2,
             bg="red",
             fg="white",
-            command=lambda: self.run_command("stop_now")
+            command=self.stop_robot
         ).pack(pady=15)
 
     def load_script(self):
@@ -68,16 +72,23 @@ class StageGUI:
             self.status_label.config(text="Status: Load failed")
             print(result.stderr)
 
-    def run_command(self, command_name):
-        self.status_label.config(text=f"Status: Running {command_name}")
+    def run_all(self):
+        self.status_label.config(text="Status: Running all stages")
 
-        command = f"source {SCRIPT_PATH} && {command_name}"
+        command = f"source {SCRIPT_PATH} && run_all"
 
-        try:
-            subprocess.Popen(["bash", "-lc", command])
-        except Exception as error:
-            self.status_label.config(text=f"Status: Error running {command_name}")
-            print(error)
+        self.process = subprocess.Popen(
+            ["bash", "-lc", command]
+        )
+
+    def stop_robot(self):
+        self.status_label.config(text="Status: STOP sent")
+
+        command = f"source {SCRIPT_PATH} && stop_now"
+
+        subprocess.Popen(
+            ["bash", "-lc", command]
+        )
 
     def run(self):
         self.root.mainloop()
