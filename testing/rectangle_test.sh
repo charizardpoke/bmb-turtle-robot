@@ -42,8 +42,8 @@ stage_2() {
 }
 
 stage_3() {
-  echo "Stage 3: Go straight for 1.5 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 15
+  echo "Stage 3: Go straight for 1.8 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 18
   stop_now
 }
 
@@ -78,8 +78,8 @@ stage_8() {
 }
 
 stage_9() {
-  echo "Stage 9: Go straight for 1.5 seconds"
-  publish_cmd "$FORWARD_SPEED" 0.0 15
+  echo "Stage 9: Go straight for 1.8 seconds"
+  publish_cmd "$FORWARD_SPEED" 0.0 18
   stop_now
 }
 
