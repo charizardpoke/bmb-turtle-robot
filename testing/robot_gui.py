@@ -49,6 +49,7 @@ class RobotGUI(Node):
         self.process = None
         self.lidar_process = None
         self.pi_terminal_process = None
+        self.laptop_view_process = None
 
         self.robot_confirmed_on = False
         self.robot_check_count = 0
@@ -97,6 +98,16 @@ class RobotGUI(Node):
             bg="purple",
             fg="white",
             command=self.connect_pi_and_launch_robot
+        ).pack(pady=8)
+
+        tk.Button(
+            col1,
+            text="RViz Webcam + LiDAR View",
+            width=28,
+            height=3,
+            bg="darkblue",
+            fg="white",
+            command=self.launch_laptop_sensor_view
         ).pack(pady=8)
 
         # =========================
@@ -387,6 +398,52 @@ exec bash
         self.root.after(8000, self.check_robot_nodes_on_pi)
 
     # ==================================================
+    # Launch RViz Webcam + LiDAR View on Laptop
+    # ==================================================
+    def launch_laptop_sensor_view(self):
+        if not self.check_program("terminator"):
+            return
+
+        self.status_label.config(text="Status: Launching RViz Webcam + LiDAR View")
+
+        script_path = "/tmp/walle_laptop_sensor_view.sh"
+
+        script_content = """#!/bin/bash
+
+echo "===== RViz Webcam + LiDAR View ====="
+echo ""
+
+cd ~/ros2_ws
+
+echo "Building workspace..."
+colcon build --symlink-install
+
+echo ""
+echo "Sourcing ROS2..."
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+echo ""
+echo "Launching robot description display..."
+ros2 launch my_robot_description display.launch.xml
+
+echo ""
+echo "RViz Webcam + LiDAR View ended."
+exec bash
+"""
+
+        with open(script_path, "w") as file:
+            file.write(script_content)
+
+        os.chmod(script_path, 0o755)
+
+        self.laptop_view_process = subprocess.Popen([
+            "terminator",
+            "-e",
+            f"bash {script_path}"
+        ])
+
+    # ==================================================
     # Auto Check Robot Is Really ON
     # This works for:
     # 1. GUI launch
@@ -503,6 +560,9 @@ echo "===== STOP LAPTOP ROS NODES ====="
 echo "1) Terminate laptop Nav2 / RViz / ROS tools..."
 pkill -TERM -u "$USER" -f "[n]avigation2.launch.py" 2>/dev/null || true
 pkill -TERM -u "$USER" -f "[r]viz2" 2>/dev/null || true
+pkill -TERM -u "$USER" -f "[d]isplay.launch.xml" 2>/dev/null || true
+pkill -TERM -u "$USER" -f "[r]obot_state_publisher" 2>/dev/null || true
+pkill -TERM -u "$USER" -f "[j]oint_state_publisher_gui" 2>/dev/null || true
 pkill -TERM -u "$USER" -f "[b]t_navigator" 2>/dev/null || true
 pkill -TERM -u "$USER" -f "[p]lanner_server" 2>/dev/null || true
 pkill -TERM -u "$USER" -f "[c]ontroller_server" 2>/dev/null || true
@@ -525,6 +585,9 @@ sleep 1
 echo "2) Force kill laptop leftovers..."
 pkill -KILL -u "$USER" -f "[n]avigation2.launch.py" 2>/dev/null || true
 pkill -KILL -u "$USER" -f "[r]viz2" 2>/dev/null || true
+pkill -KILL -u "$USER" -f "[d]isplay.launch.xml" 2>/dev/null || true
+pkill -KILL -u "$USER" -f "[r]obot_state_publisher" 2>/dev/null || true
+pkill -KILL -u "$USER" -f "[j]oint_state_publisher_gui" 2>/dev/null || true
 pkill -KILL -u "$USER" -f "[b]t_navigator" 2>/dev/null || true
 pkill -KILL -u "$USER" -f "[p]lanner_server" 2>/dev/null || true
 pkill -KILL -u "$USER" -f "[c]ontroller_server" 2>/dev/null || true
