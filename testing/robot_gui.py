@@ -59,7 +59,7 @@ class RobotGUI(Node):
         # =========================
         self.root = tk.Tk()
         self.root.title("BMB Turtle Robot Control")
-        self.root.geometry("950x850+400+80")
+        self.root.geometry("1000x850+400+80")
 
         tk.Label(
             self.root,
@@ -263,6 +263,7 @@ class RobotGUI(Node):
             width=12,
             height=3
         )
+
         button.grid(row=row, column=column, padx=6, pady=6)
 
         button.bind("<ButtonPress-1>", lambda event: command())
@@ -318,6 +319,7 @@ class RobotGUI(Node):
             print(f"Missing program: {program_name}")
             print(f"Install it with: sudo apt install {program_name} -y")
             return False
+
         return True
 
     # ==================================================
@@ -381,10 +383,14 @@ exec bash
             f"bash {script_path}"
         ])
 
+        # Auto check robot status after launch
         self.root.after(8000, self.check_robot_nodes_on_pi)
 
     # ==================================================
-    # Check Robot Is Really ON
+    # Auto Check Robot Is Really ON
+    # This works for:
+    # 1. GUI launch
+    # 2. Manual SSH launch
     # ==================================================
     def check_robot_nodes_on_pi(self):
         if self.stop_requested:
@@ -394,8 +400,7 @@ exec bash
 
         command = f"""
 timeout 5 sshpass -p '{PI_PASSWORD}' ssh -o ConnectTimeout=3 -o StrictHostKeyChecking=no {PI_USER}@{PI_IP} '
-source ~/.bashrc
-ros2 node list 2>/dev/null | grep -E "controller_manager|robot_state_publisher|diff_drive_controller"
+pgrep -af "ros2 launch my_robot_bringup my_robot.launch.xml|ros2_control_node|robot_state_publisher|rplidar_composition|diff_drive_controller"
 '
 """
 
@@ -414,10 +419,11 @@ ros2 node list 2>/dev/null | grep -E "controller_manager|robot_state_publisher|d
             self.set_led_status("running")
             return
 
-        if self.robot_check_count < 10:
-            self.status_label.config(text="Status: Waiting for robot ROS2 nodes...")
+        if self.robot_check_count < 20:
+            self.status_label.config(text="Status: Waiting for robot to start...")
             self.set_led_status("off")
             self.root.after(3000, self.check_robot_nodes_on_pi)
+
         else:
             self.status_label.config(text="Status: Robot not confirmed")
             self.set_led_status("off")
@@ -436,6 +442,7 @@ ros2 node list 2>/dev/null | grep -E "controller_manager|robot_state_publisher|d
 
         if result.returncode == 0:
             self.status_label.config(text="Status: auto_script.sh loaded")
+
         else:
             self.status_label.config(text="Status: auto_script.sh load failed")
             self.set_led_status("stop")
@@ -799,6 +806,7 @@ def main():
 
     try:
         gui.run()
+
     except KeyboardInterrupt:
         pass
 
