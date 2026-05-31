@@ -8,6 +8,10 @@ import tkinter as tk
 import subprocess
 import shutil
 import os
+<<<<<<< HEAD
+=======
+import signal
+>>>>>>> 2b1ab17 (Initial commit)
 
 
 SCRIPT_PATH = "./auto_script.sh"
@@ -23,19 +27,29 @@ class StageGUI:
 
         self.root = tk.Tk()
         self.root.title("WALL-E Auto Script GUI")
+<<<<<<< HEAD
         self.root.geometry("380x600+1000+100")
+=======
+        self.root.geometry("900x420+500+100")
+>>>>>>> 2b1ab17 (Initial commit)
 
         tk.Label(
             self.root,
             text="WALL-E Auto Control",
+<<<<<<< HEAD
             font=("Arial", 16)
         ).pack(pady=15)
+=======
+            font=("Arial", 18)
+        ).pack(pady=10)
+>>>>>>> 2b1ab17 (Initial commit)
 
         self.status_label = tk.Label(
             self.root,
             text="Status: Ready",
             font=("Arial", 11)
         )
+<<<<<<< HEAD
         self.status_label.pack(pady=10)
 
         tk.Button(
@@ -50,6 +64,49 @@ class StageGUI:
 
         tk.Button(
             self.root,
+=======
+        self.status_label.pack(pady=5)
+
+        main_frame = tk.Frame(self.root)
+        main_frame.pack(pady=15)
+
+        # =========================
+        # Column 1: Pi Launch
+        # =========================
+        col1 = tk.Frame(main_frame)
+        col1.grid(row=0, column=0, padx=15)
+
+        tk.Label(
+            col1,
+            text="Pi Setup",
+            font=("Arial", 13, "bold")
+        ).pack(pady=5)
+
+        tk.Button(
+            col1,
+            text="Connect Pi + Launch Robot",
+            width=28,
+            height=3,
+            bg="purple",
+            fg="white",
+            command=self.connect_pi_and_launch_robot
+        ).pack(pady=8)
+
+        # =========================
+        # Column 2: Auto Movement
+        # =========================
+        col2 = tk.Frame(main_frame)
+        col2.grid(row=0, column=1, padx=15)
+
+        tk.Label(
+            col2,
+            text="Auto Commands",
+            font=("Arial", 13, "bold")
+        ).pack(pady=5)
+
+        tk.Button(
+            col2,
+>>>>>>> 2b1ab17 (Initial commit)
             text="Load auto_script.sh",
             width=28,
             height=2,
@@ -57,7 +114,11 @@ class StageGUI:
         ).pack(pady=5)
 
         tk.Button(
+<<<<<<< HEAD
             self.root,
+=======
+            col2,
+>>>>>>> 2b1ab17 (Initial commit)
             text="Clockwise",
             width=28,
             height=2,
@@ -67,7 +128,11 @@ class StageGUI:
         ).pack(pady=5)
 
         tk.Button(
+<<<<<<< HEAD
             self.root,
+=======
+            col2,
+>>>>>>> 2b1ab17 (Initial commit)
             text="Anticlockwise",
             width=28,
             height=2,
@@ -77,7 +142,11 @@ class StageGUI:
         ).pack(pady=5)
 
         tk.Button(
+<<<<<<< HEAD
             self.root,
+=======
+            col2,
+>>>>>>> 2b1ab17 (Initial commit)
             text="Turn 180",
             width=28,
             height=2,
@@ -86,6 +155,7 @@ class StageGUI:
             command=self.turn180
         ).pack(pady=5)
 
+<<<<<<< HEAD
         tk.Button(
             self.root,
             text="STOP",
@@ -95,6 +165,29 @@ class StageGUI:
             fg="white",
             command=self.stop_robot
         ).pack(pady=15)
+=======
+        # =========================
+        # Column 3: Stop / Cancel
+        # =========================
+        col3 = tk.Frame(main_frame)
+        col3.grid(row=0, column=2, padx=15)
+
+        tk.Label(
+            col3,
+            text="Emergency",
+            font=("Arial", 13, "bold")
+        ).pack(pady=5)
+
+        tk.Button(
+            col3,
+            text="STOP / Cancel Everything",
+            width=28,
+            height=5,
+            bg="red",
+            fg="white",
+            command=self.stop_robot
+        ).pack(pady=8)
+>>>>>>> 2b1ab17 (Initial commit)
 
     def check_program(self, program_name):
         if shutil.which(program_name) is None:
@@ -169,7 +262,12 @@ exec bash
         command = f"source {SCRIPT_PATH} && {function_name}"
 
         self.process = subprocess.Popen(
+<<<<<<< HEAD
             ["bash", "-lc", command]
+=======
+            ["bash", "-lc", command],
+            start_new_session=True
+>>>>>>> 2b1ab17 (Initial commit)
         )
 
     def clockwise(self):
@@ -182,7 +280,27 @@ exec bash
         self.run_local_function("turn180", "Status: Running 180 turn")
 
     def stop_robot(self):
+<<<<<<< HEAD
         self.run_local_function("stop_now", "Status: STOP sent")
+=======
+        self.status_label.config(text="Status: STOP / Cancel sent")
+
+        # Cancel currently running local auto command
+        if self.process is not None:
+            try:
+                os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
+            except Exception as error:
+                print("Could not cancel running process:", error)
+
+            self.process = None
+
+        # Send stop command to robot
+        command = f"source {SCRIPT_PATH} && stop_now"
+
+        subprocess.Popen(
+            ["bash", "-lc", command]
+        )
+>>>>>>> 2b1ab17 (Initial commit)
 
     def run(self):
         self.root.mainloop()
