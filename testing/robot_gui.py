@@ -20,6 +20,7 @@ from geometry_msgs.msg import TwistStamped
 
 
 SCRIPT_PATH = "./auto_script.sh"
+LIDAR_SAFETY_PATH = "./lidar_safety_stop.py"
 
 PI_USER = "pi"
 PI_IP = "192.168.8.155"
@@ -46,13 +47,15 @@ class RobotGUI(Node):
         self.current_angular = 0.0
 
         self.process = None
+        self.lidar_process = None
+        self.pi_terminal_process = None
 
         # =========================
         # Tkinter GUI
         # =========================
         self.root = tk.Tk()
         self.root.title("BMB Turtle Robot Control")
-        self.root.geometry("950x700+400+80")
+        self.root.geometry("950x850+400+80")
 
         tk.Label(
             self.root,
@@ -115,6 +118,16 @@ class RobotGUI(Node):
             width=28,
             height=2,
             command=self.load_script
+        ).pack(pady=5)
+
+        tk.Button(
+            col2,
+            text="Load lidar_safety_stop.py",
+            width=28,
+            height=2,
+            bg="gray",
+            fg="white",
+            command=self.load_lidar_safety
         ).pack(pady=5)
 
         tk.Button(
@@ -256,7 +269,7 @@ class RobotGUI(Node):
         self.root.after(100, self.update_ros)
 
     # ==================================================
-    # Pi Launch / Auto Script Functions
+    # Program Check
     # ==================================================
     def check_program(self, program_name):
         if shutil.which(program_name) is None:
@@ -266,6 +279,9 @@ class RobotGUI(Node):
             return False
         return True
 
+    # ==================================================
+    # Pi Launch Function
+    # ==================================================
     def connect_pi_and_launch_robot(self):
         if not self.check_program("sshpass"):
             return
@@ -285,8 +301,7 @@ echo ""
 
 sshpass -p '{PI_PASSWORD}' ssh -tt -o StrictHostKeyChecking=no {PI_USER}@{PI_IP} << 'EOF'
 echo "Connected to Pi."
-echo "Waiting 5 seconds before launching robot..."
-sleep 5
+echo "Launching robot now..."
 
 cd ~/ros2_ws
 colcon build --symlink-install
@@ -304,12 +319,15 @@ exec bash
 
         os.chmod(script_path, 0o755)
 
-        subprocess.Popen([
+        self.pi_terminal_process = subprocess.Popen([
             "terminator",
             "-e",
             f"bash {script_path}"
         ])
 
+    # ==================================================
+    # Auto Script Functions
+    # ==================================================
     def load_script(self):
         command = f"source {SCRIPT_PATH} && echo loaded"
 
@@ -322,8 +340,31 @@ exec bash
         if result.returncode == 0:
             self.status_label.config(text="Status: auto_script.sh loaded")
         else:
-            self.status_label.config(text="Status: Load failed")
+            self.status_label.config(text="Status: auto_script.sh load failed")
             print(result.stderr)
+
+    def load_lidar_safety(self):
+        if self.lidar_process is not None:
+            self.status_label.config(text="Status: lidar_safety_stop.py already running")
+            return
+
+        if not os.path.exists(LIDAR_SAFETY_PATH):
+            self.status_label.config(text="Status: lidar_safety_stop.py not found")
+            print(f"Could not find: {LIDAR_SAFETY_PATH}")
+            return
+
+        self.status_label.config(text="Status: Running lidar_safety_stop.py")
+
+        command = f"""
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+python3 {LIDAR_SAFETY_PATH}
+"""
+
+        self.lidar_process = subprocess.Popen(
+            ["bash", "-lc", command],
+            start_new_session=True
+        )
 
     def run_local_function(self, function_name, status_text):
         self.status_label.config(text=status_text)
@@ -345,10 +386,44 @@ exec bash
         self.run_local_function("turn180", "Status: Running 180 turn")
 
     # ==================================================
+    # Stop Pi Robot Launch
+    # ==================================================
+    def stop_pi_robot_launch(self):
+        if not self.check_program("sshpass"):
+            return
+
+        self.status_label.config(text="Status: Stopping Pi robot launch")
+
+        stop_command = f"""
+sshpass -p '{PI_PASSWORD}' ssh -o StrictHostKeyChecking=no {PI_USER}@{PI_IP} "
+pkill -f 'ros2 launch my_robot_bringup my_robot.launch.xml';
+pkill -f 'my_robot.launch.xml';
+pkill -f 'colcon build';
+pkill -f 'controller_manager';
+pkill -f 'robot_state_publisher';
+pkill -f 'diff_drive_controller';
+pkill -f 'joint_state_publisher';
+"
+"""
+
+        subprocess.Popen(
+            ["bash", "-lc", stop_command],
+            start_new_session=True
+        )
+
+        if self.pi_terminal_process is not None:
+            try:
+                self.pi_terminal_process.terminate()
+            except Exception as error:
+                print("Could not close Pi terminal:", error)
+
+            self.pi_terminal_process = None
+
+    # ==================================================
     # Emergency Stop
     # ==================================================
     def stop_everything(self):
-        self.status_label.config(text="Status: STOP / Cancel sent")
+        self.status_label.config(text="Status: STOP EVERYTHING")
 
         # Stop manual movement
         self.current_linear = 0.0
@@ -360,16 +435,29 @@ exec bash
             try:
                 os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
             except Exception as error:
-                print("Could not cancel running process:", error)
+                print("Could not cancel auto_script process:", error)
 
             self.process = None
+
+        # Cancel lidar_safety_stop.py
+        if self.lidar_process is not None:
+            try:
+                os.killpg(os.getpgid(self.lidar_process.pid), signal.SIGTERM)
+            except Exception as error:
+                print("Could not cancel lidar_safety_stop.py:", error)
+
+            self.lidar_process = None
 
         # Send stop command from auto_script.sh
         command = f"source {SCRIPT_PATH} && stop_now"
 
         subprocess.Popen(
-            ["bash", "-lc", command]
+            ["bash", "-lc", command],
+            start_new_session=True
         )
+
+        # Stop robot launch running on Raspberry Pi
+        self.stop_pi_robot_launch()
 
     def run(self):
         self.root.mainloop()

@@ -5,37 +5,25 @@ import rclpy
 from rclpy.node import Node
 
 from sensor_msgs.msg import LaserScan
-from geometry_msgs.msg import TwistStamped
 from std_msgs.msg import String
 
 
-class LidarSafetyStop(Node):
+class LidarBuzzerWarning(Node):
     def __init__(self):
-        super().__init__('lidar_safety_stop')
+        super().__init__('lidar_buzzer_warning')
 
-        self.stop_distance = 0.45
-        self.clear_distance = 0.55
-        self.front_angle_deg = 120
+        # ===== Settings =====
+        self.buzz_distance = 0.45      # ON if obstacle <= 45 cm
+        self.clear_distance = 0.55     # OFF if obstacle >= 55 cm
+        self.front_angle_deg = 120     # front lidar area
 
-        self.obstacle_detected = False
+        self.buzzer_state = 'OFF'
+        self.last_min_distance = None
 
         self.scan_sub = self.create_subscription(
             LaserScan,
             '/scan',
             self.scan_callback,
-            10
-        )
-
-        self.cmd_sub = self.create_subscription(
-            TwistStamped,
-            '/cmd_vel_raw',
-            self.cmd_callback,
-            10
-        )
-
-        self.cmd_pub = self.create_publisher(
-            TwistStamped,
-            '/diff_drive_controller/cmd_vel',
             10
         )
 
@@ -45,9 +33,12 @@ class LidarSafetyStop(Node):
             10
         )
 
-        self.get_logger().info('Lidar safety stop is running.')
-        self.get_logger().info('Controller input: /cmd_vel_raw')
-        self.get_logger().info('Robot output: /diff_drive_controller/cmd_vel')
+        # Publish buzzer state repeatedly
+        self.timer = self.create_timer(0.2, self.publish_buzzer_state)
+
+        self.get_logger().info('Lidar buzzer warning started.')
+        self.get_logger().info('Publishing to /buzzer_cmd')
+        self.get_logger().info('Buzzer ON <= 0.45 m, OFF >= 0.55 m')
 
     def scan_callback(self, msg):
         front_ranges = []
@@ -64,69 +55,43 @@ class LidarSafetyStop(Node):
             angle += msg.angle_increment
 
         if not front_ranges:
+            self.buzzer_state = 'OFF'
+            self.last_min_distance = None
             return
 
         min_distance = min(front_ranges)
+        self.last_min_distance = min_distance
 
-        if min_distance <= self.stop_distance:
-            if not self.obstacle_detected:
-                self.get_logger().warn(f'Obstacle too close: {min_distance:.2f} m')
-
-            self.obstacle_detected = True
-            self.stop_robot()
-            self.send_buzzer('ON')
+        if min_distance <= self.buzz_distance:
+            if self.buzzer_state != 'ON':
+                self.get_logger().warn(f'Obstacle close: {min_distance:.2f} m - BUZZER ON')
+            self.buzzer_state = 'ON'
 
         elif min_distance >= self.clear_distance:
-            if self.obstacle_detected:
-                self.get_logger().info(f'Obstacle cleared: {min_distance:.2f} m')
+            if self.buzzer_state != 'OFF':
+                self.get_logger().info(f'Obstacle cleared: {min_distance:.2f} m - BUZZER OFF')
+            self.buzzer_state = 'OFF'
 
-            self.obstacle_detected = False
-            self.send_buzzer('OFF')
-
-    def cmd_callback(self, msg):
-        if self.obstacle_detected:
-            self.stop_robot()
-            self.send_buzzer('ON')
-            return
-
-        safe_msg = TwistStamped()
-        safe_msg.header.stamp = self.get_clock().now().to_msg()
-        safe_msg.header.frame_id = 'base_footprint'
-        safe_msg.twist = msg.twist
-
-        self.cmd_pub.publish(safe_msg)
-
-    def stop_robot(self):
-        stop_msg = TwistStamped()
-        stop_msg.header.stamp = self.get_clock().now().to_msg()
-        stop_msg.header.frame_id = 'base_footprint'
-
-        stop_msg.twist.linear.x = 0.0
-        stop_msg.twist.linear.y = 0.0
-        stop_msg.twist.linear.z = 0.0
-        stop_msg.twist.angular.x = 0.0
-        stop_msg.twist.angular.y = 0.0
-        stop_msg.twist.angular.z = 0.0
-
-        self.cmd_pub.publish(stop_msg)
-
-    def send_buzzer(self, state):
+    def publish_buzzer_state(self):
         msg = String()
-        msg.data = state
+        msg.data = self.buzzer_state
         self.buzzer_pub.publish(msg)
 
 
 def main(args=None):
     rclpy.init(args=args)
-    node = LidarSafetyStop()
+    node = LidarBuzzerWarning()
 
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
 
-    node.stop_robot()
-    node.send_buzzer('OFF')
+    # Turn buzzer off when closing
+    msg = String()
+    msg.data = 'OFF'
+    node.buzzer_pub.publish(msg)
+
     node.destroy_node()
     rclpy.shutdown()
 
