@@ -54,6 +54,12 @@ turnRight() {
   stop_now
 }
 
+turnRight180() {
+  echo "Turn right 180 degrees"
+  publish_cmd 0.0 "-$TURN_SPEED" 14
+  stop_now
+}
+
 longForward() {
   echo "Go straight for 1.7 seconds"
   publish_cmd "$FORWARD_SPEED" 0.0 17
@@ -91,5 +97,13 @@ anticlockwise() {
   shortForward
 
   stop_now
+  echo "Path complete."
+}
+
+turn180() {
+  echo "Turn 180 degrees"
+
+  turnRight180
+
   echo "Path complete."
 }

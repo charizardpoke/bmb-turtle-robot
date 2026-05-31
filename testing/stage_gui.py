@@ -14,7 +14,7 @@ class StageGUI:
 
         self.root = tk.Tk()
         self.root.title("WALL-E Auto Script GUI")
-        self.root.geometry("350x420")
+        self.root.geometry("350x470")
 
         tk.Label(
             self.root,
@@ -59,6 +59,16 @@ class StageGUI:
 
         tk.Button(
             self.root,
+            text="Turn 180",
+            width=22,
+            height=2,
+            bg="orange",
+            fg="black",
+            command=self.turn180
+        ).pack(pady=5)
+
+        tk.Button(
+            self.root,
             text="STOP",
             width=22,
             height=2,
@@ -95,6 +105,15 @@ class StageGUI:
         self.status_label.config(text="Status: Running anticlockwise")
 
         command = f"source {SCRIPT_PATH} && anticlockwise"
+
+        self.process = subprocess.Popen(
+            ["bash", "-lc", command]
+        )
+
+    def turn180(self):
+        self.status_label.config(text="Status: Running 180 turn")
+
+        command = f"source {SCRIPT_PATH} && turn180"
 
         self.process = subprocess.Popen(
             ["bash", "-lc", command]
