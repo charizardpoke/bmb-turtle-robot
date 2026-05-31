@@ -1,4 +1,7 @@
 # RUNNING COMMANDS - LAPTOP:
+# cd ~/ros2_ws
+# source /opt/ros/jazzy/setup.bash
+# source install/setup.bash
 # python3 stage_gui.py
 #
 # Install first on laptop:
@@ -8,21 +11,48 @@ import tkinter as tk
 import subprocess
 import shutil
 import os
+import threading
+import time
 
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import TwistStamped
 
-SCRIPT_PATH = "./auto_script.sh"
 
 PI_USER = "pi"
 PI_IP = "192.168.8.155"
 PI_PASSWORD = "1"
 
 
-class StageGUI:
+class StageGUI(Node):
     def __init__(self):
+        super().__init__("stage_gui_node")
+
         self.process = None
 
+        # ROS settings
+        self.cmd_topic = "/diff_drive_controller/cmd_vel"
+        self.rate_hz = 10
+
+        # Same speed settings as auto_script.sh
+        self.forward_speed = 0.5
+        self.turn_speed = 0.5
+
+        # Stop between each motion
+        self.stop_time = 0.5
+
+        # Create ROS publisher one time
+        self.publisher_ = self.create_publisher(
+            TwistStamped,
+            self.cmd_topic,
+            10
+        )
+
+        self.stop_requested = False
+        self.motion_thread = None
+
         self.root = tk.Tk()
-        self.root.title("WALL-E Auto Script GUI")
+        self.root.title("WALL-E Direct ROS2 GUI")
         self.root.geometry("380x600+1000+100")
 
         tk.Label(
@@ -50,20 +80,12 @@ class StageGUI:
 
         tk.Button(
             self.root,
-            text="Load auto_script.sh",
-            width=28,
-            height=2,
-            command=self.load_script
-        ).pack(pady=5)
-
-        tk.Button(
-            self.root,
             text="Clockwise",
             width=28,
             height=2,
             bg="green",
             fg="white",
-            command=self.clockwise
+            command=self.start_clockwise
         ).pack(pady=5)
 
         tk.Button(
@@ -73,7 +95,7 @@ class StageGUI:
             height=2,
             bg="blue",
             fg="white",
-            command=self.anticlockwise
+            command=self.start_anticlockwise
         ).pack(pady=5)
 
         tk.Button(
@@ -83,7 +105,7 @@ class StageGUI:
             height=2,
             bg="orange",
             fg="black",
-            command=self.turn180
+            command=self.start_turn180
         ).pack(pady=5)
 
         tk.Button(
@@ -95,6 +117,12 @@ class StageGUI:
             fg="white",
             command=self.stop_robot
         ).pack(pady=15)
+
+        self.root.protocol("WM_DELETE_WINDOW", self.close)
+
+    # -------------------------
+    # Pi SSH launch functions
+    # -------------------------
 
     def check_program(self, program_name):
         if shutil.which(program_name) is None:
@@ -148,46 +176,162 @@ exec bash
             f"bash {script_path}"
         ])
 
-    def load_script(self):
-        command = f"source {SCRIPT_PATH} && echo loaded"
+    # -------------------------
+    # ROS movement functions
+    # -------------------------
 
-        result = subprocess.run(
-            ["bash", "-lc", command],
-            capture_output=True,
-            text=True
+    def publish_cmd(self, linear_x, angular_z):
+        msg = TwistStamped()
+
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = "base_footprint"
+
+        msg.twist.linear.x = float(linear_x)
+        msg.twist.angular.z = float(angular_z)
+
+        self.publisher_.publish(msg)
+
+    def move_for_time(self, linear_x, angular_z, seconds):
+        start_time = time.time()
+
+        while time.time() - start_time < seconds:
+            if self.stop_requested:
+                break
+
+            self.publish_cmd(linear_x, angular_z)
+            time.sleep(1.0 / self.rate_hz)
+
+    def stop_for_time(self, seconds):
+        start_time = time.time()
+
+        while time.time() - start_time < seconds:
+            self.publish_cmd(0.0, 0.0)
+            time.sleep(1.0 / self.rate_hz)
+
+    def stop_now(self):
+        self.set_status("STOPPING robot")
+        self.stop_for_time(self.stop_time)
+
+    # -------------------------
+    # Same motions as auto_script.sh
+    # -------------------------
+
+    def short_forward(self):
+        self.set_status("Go straight for 1 second")
+        self.move_for_time(self.forward_speed, 0.0, 1.0)
+        self.stop_now()
+
+    def long_forward(self):
+        self.set_status("Go straight for 1.7 seconds")
+        self.move_for_time(self.forward_speed, 0.0, 1.7)
+        self.stop_now()
+
+    def turn_right(self):
+        self.set_status("Turn right 90 degrees")
+        self.move_for_time(0.0, -self.turn_speed, 0.6)
+        self.stop_now()
+
+    def turn_left(self):
+        self.set_status("Turn left 90 degrees")
+        self.move_for_time(0.0, self.turn_speed, 0.6)
+        self.stop_now()
+
+    def turn_right_180(self):
+        self.set_status("Turn right 180 degrees")
+        self.move_for_time(0.0, -self.turn_speed, 1.4)
+        self.stop_now()
+
+    # -------------------------
+    # Full paths
+    # -------------------------
+
+    def clockwise_path(self):
+        self.stop_requested = False
+        self.set_status("Running clockwise")
+
+        self.short_forward()
+        self.turn_right()
+        self.long_forward()
+        self.turn_right()
+        self.short_forward()
+
+        self.stop_now()
+        self.set_status("Path complete")
+
+    def anticlockwise_path(self):
+        self.stop_requested = False
+        self.set_status("Running anticlockwise")
+
+        self.short_forward()
+        self.turn_left()
+        self.long_forward()
+        self.turn_left()
+        self.short_forward()
+
+        self.stop_now()
+        self.set_status("Path complete")
+
+    def turn180_path(self):
+        self.stop_requested = False
+        self.set_status("Running 180 turn")
+
+        self.turn_right_180()
+
+        self.set_status("Path complete")
+
+    # -------------------------
+    # GUI button functions
+    # -------------------------
+
+    def start_motion(self, target_function):
+        if self.motion_thread is not None and self.motion_thread.is_alive():
+            self.set_status("Robot is already moving")
+            return
+
+        self.stop_requested = False
+
+        self.motion_thread = threading.Thread(
+            target=target_function,
+            daemon=True
         )
+        self.motion_thread.start()
 
-        if result.returncode == 0:
-            self.status_label.config(text="Status: auto_script.sh loaded")
-        else:
-            self.status_label.config(text="Status: Load failed")
-            print(result.stderr)
+    def start_clockwise(self):
+        self.start_motion(self.clockwise_path)
 
-    def run_local_function(self, function_name, status_text):
-        self.status_label.config(text=status_text)
+    def start_anticlockwise(self):
+        self.start_motion(self.anticlockwise_path)
 
-        command = f"source {SCRIPT_PATH} && {function_name}"
-
-        self.process = subprocess.Popen(
-            ["bash", "-lc", command]
-        )
-
-    def clockwise(self):
-        self.run_local_function("clockwise", "Status: Running clockwise")
-
-    def anticlockwise(self):
-        self.run_local_function("anticlockwise", "Status: Running anticlockwise")
-
-    def turn180(self):
-        self.run_local_function("turn180", "Status: Running 180 turn")
+    def start_turn180(self):
+        self.start_motion(self.turn180_path)
 
     def stop_robot(self):
-        self.run_local_function("stop_now", "Status: STOP sent")
+        self.stop_requested = True
+        self.set_status("STOP sent")
+        self.stop_now()
+
+    def set_status(self, text):
+        self.root.after(
+            0,
+            lambda: self.status_label.config(text=f"Status: {text}")
+        )
+
+    def close(self):
+        self.stop_requested = True
+        self.stop_now()
+        self.destroy_node()
+        rclpy.shutdown()
+        self.root.destroy()
 
     def run(self):
         self.root.mainloop()
 
 
-if __name__ == "__main__":
+def main():
+    rclpy.init()
     gui = StageGUI()
     gui.run()
+
+
+if __name__ == "__main__":
+    main()
